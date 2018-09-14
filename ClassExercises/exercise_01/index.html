@@ -32,15 +32,28 @@
   </style>
   <script>
   window.onload = function(){
-    let number;
+	 
     let handleClick = function(event){
-
+    
         console.log("testing " + window.event.target.id);
+        
+        let para = document.getElementById("displayText");
+        let caption = document.createTextNode( "This is Text For Box " + window.event.target.id + ". ");
+        para.style.display = 'inline-block';
+        para.appendChild(caption);
+        para.addEventListener('click', erase);
     }
+    let erase = function(event){
+		let para = document.getElementById("displayText");
+		while(para.firstChild != null){
+			para.removeChild(para.firstChild);
+		}
+		para.style.display = 'none';
+	}
       let boxArray = document.getElementsByClassName('box');
       let boxCount = boxArray.length;
       for (let i = 0; i < boxCount; i = i+1){
-        addEventListener('click', handleClick);
+      	boxArray[i].addEventListener('click', handleClick);
       }
 
     // let cBox = document.getElementById('c');
