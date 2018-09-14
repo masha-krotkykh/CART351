@@ -32,9 +32,15 @@
   </style>
   <script>
   window.onload = function(){
+    let number;
     let handleClick = function(event){
-        console.log("testing");
+
+        console.log("testing " + this.id);
     }
+      // let boxArray = document.getElementsByClassName('box');
+      // for (var i = 0; i < 2; i = i+1){
+      //   addEventListener('click', handleClick);
+      // }
 
     let cBox = document.getElementById('c');
     cBox.addEventListener('click', handleClick);
