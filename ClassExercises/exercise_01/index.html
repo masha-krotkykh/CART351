@@ -43,6 +43,7 @@
         para.appendChild(caption);
         para.addEventListener('click', erase);
     }
+    
     let erase = function(event){
 		let para = document.getElementById("displayText");
 		while(para.firstChild != null){
@@ -50,10 +51,21 @@
 		}
 		para.style.display = 'none';
 	}
+	
+	let handleOver = function(event){
+		this.style.opacity = "0.5";
+	} 
+	
+	let handleOff = function(event){
+		this.style.opacity = "1";
+	} 
+	
       let boxArray = document.getElementsByClassName('box');
       let boxCount = boxArray.length;
-      for (let i = 0; i < boxCount; i = i+1){
+      for (var i = 0; i < boxCount; i = i+1){
       	boxArray[i].addEventListener('click', handleClick);
+      	boxArray[i].addEventListener('mouseover', handleOver);
+      	boxArray[i].addEventListener('mouseout', handleOff);
       }
 
     // let cBox = document.getElementById('c');
