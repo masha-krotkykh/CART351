@@ -35,19 +35,20 @@
     let number;
     let handleClick = function(event){
 
-        console.log("testing " + this.id);
+        console.log("testing " + window.event.target.id);
     }
-      // let boxArray = document.getElementsByClassName('box');
-      // for (var i = 0; i < 2; i = i+1){
-      //   addEventListener('click', handleClick);
-      // }
+      let boxArray = document.getElementsByClassName('box');
+      let boxCount = boxArray.length;
+      for (let i = 0; i < boxCount; i = i+1){
+        addEventListener('click', handleClick);
+      }
 
-    let cBox = document.getElementById('c');
-    cBox.addEventListener('click', handleClick);
-    let dBox = document.getElementById('d');
-    dBox.addEventListener('click', handleClick);
-    let eBox = document.getElementById('e');
-    eBox.addEventListener('click', handleClick);
+    // let cBox = document.getElementById('c');
+    // cBox.addEventListener('click', handleClick);
+    // let dBox = document.getElementById('d');
+    // dBox.addEventListener('click', handleClick);
+    // let eBox = document.getElementById('e');
+    // eBox.addEventListener('click', handleClick);
   } //on load
 
   </script>
