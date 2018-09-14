@@ -32,7 +32,16 @@
   </style>
   <script>
   window.onload = function(){
+    let handleClick = function(event){
         console.log("testing");
+    }
+
+    let cBox = document.getElementById('c');
+    cBox.addEventListener('click', handleClick);
+    let dBox = document.getElementById('d');
+    dBox.addEventListener('click', handleClick);
+    let eBox = document.getElementById('e');
+    eBox.addEventListener('click', handleClick);
   } //on load
 
   </script>
