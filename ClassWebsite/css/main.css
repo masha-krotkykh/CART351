@@ -1,7 +1,179 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Condensed|Josefin+Sans);
 
-h2{
-  text-align: center;
+@font-face {
+    font-family: 'canterbold';
+    src: url('../fonts/canter_bold-webfont.eot');
+    src: url('../fonts/canter_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/canter_bold-webfont.woff2') format('woff2'),
+         url('../fonts/canter_bold-webfont.woff') format('woff'),
+         url('../fonts/canter_bold-webfont.ttf') format('truetype'),
+         url('../fonts/canter_bold-webfont.svg#canterbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+} 
+
+@font-face {
+    font-family: 'canterlight';
+    src: url('../fonts/canter_light-webfont.eot');
+    src: url('../fonts/canter_light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/canter_light-webfont.woff2') format('woff2'),
+         url('../fonts/canter_light-webfont.woff') format('woff'),
+         url('../fonts/canter_light-webfont.ttf') format('truetype'),
+         url('../fonts/canter_light-webfont.svg#canterlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+} 
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before, .clearfix:after {
+	content: " "; /* 1 */
+	display: table; /* 2 */
 }
-h3{
-  text-align: center;
+.clearfix:after {
+	clear: both;
 }
+
+/* ------------ TYPOGRAPHY ------------- */
+
+
+h2, h3, h4{
+	font-family: 'canterbold';
+	margin-top:1em;
+	margin-bottom: .5em;
+	font-size: 200%;
+	color: rgb(82,120,125);
+	text-align: center;
+}
+
+
+ p, footer{
+ 	font-family: 'Josefin Sans', Helvetica;
+ 	line-height: 1.5em;
+ }
+ 
+ figcaption{
+ 	font-family: 'Josefin Sans', Helvetica;
+ 	font-size: .8em;
+ }
+ 
+ a {
+ 	text-decoration: none;
+ 	color: #000000;
+ }
+ 
+ a:hover {
+ 	color: rgb(82,120,125);
+ }
+ 
+ footer{
+	width: 100%;
+	padding: 15px 0;
+	font-size: smaller;
+	text-align: center;
+	clear: both;
+}
+ 
+
+ /* ------------ STRUCTURE ------------- */
+ 
+ 
+ body {
+	margin : 0;
+    background-image: url("../img/tile.jpg");
+	margin: 0 auto;
+	padding: 0;
+	max-width: 100%;
+	max-width: 1024px;
+	width: 100vw;
+}
+
+#logo {
+    max-width: 85%;
+    margin: 0 auto;
+}
+
+#logo img {
+    max-width: 100%;
+	margin:  0 auto 20px auto;
+	display: block;
+}
+
+.gallery {
+	position: relative;
+	margin: 0 auto 50px auto;
+	padding-bottom: 1em;
+	max-width: 100%;
+	list-style: none;
+	text-align: center;
+}
+
+.gallery figure {
+	position: relative;
+	float: left;
+	margin: 0 auto;
+	padding-left: 5em;
+	padding-right: 5em;
+/* 	width: 100%; */
+}
+
+ .gallery figure img {
+	position: relative;
+	display: block;
+	max-width: 85%;
+	margin: 0 auto;
+}
+
+
+
+
+
+ /* ------------ MEDIA QUERIES ------------- */
+
+@media screen and (min-width: 48em) {
+
+.gallery{
+	width: 49%;
+	float: left;
+}
+
+.gallery figure {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+figcaption{
+ 	font-size: 1em;
+ }
+
+}
+
+@media screen and (min-width: 64em) {
+
+.gallery{
+	width: 32%;
+	height: auto;
+	padding-left: 7px;
+	min-height: 250px;
+
+}
+
+.gallery figure {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+} 
+
