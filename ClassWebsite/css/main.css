@@ -49,11 +49,11 @@
 /* ------------ TYPOGRAPHY ------------- */
 
 
-h2, h3, h4{
+h2, h3{
 	font-family: 'canterbold';
-	margin-top:1em;
-	margin-bottom: .5em;
-	font-size: 200%;
+	margin-top:0;
+	margin-bottom: 1em;
+	font-size: 2.2em;
 	color: rgb(82,120,125);
 	text-align: center;
 }
@@ -67,6 +67,8 @@ h2, h3, h4{
  figcaption{
  	font-family: 'Josefin Sans', Helvetica;
  	font-size: .8em;
+ 	height: 3em;
+ 	margin-bottom: 1em;
  }
  
  a {
@@ -156,7 +158,11 @@ h2, h3, h4{
 
 figcaption{
  	font-size: 1em;
- }
+}
+
+h2 {
+	font-size: 3em;
+}
 
 }
 
