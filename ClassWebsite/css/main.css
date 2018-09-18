@@ -1,17 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Condensed|Josefin+Sans);
 
-@font-face {
-    font-family: 'canterbold';
-    src: url('../fonts/canter_bold-webfont.eot');
-    src: url('../fonts/canter_bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/canter_bold-webfont.woff2') format('woff2'),
-         url('../fonts/canter_bold-webfont.woff') format('woff'),
-         url('../fonts/canter_bold-webfont.ttf') format('truetype'),
-         url('../fonts/canter_bold-webfont.svg#canterbold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-} 
 
 @font-face {
     font-family: 'canterlight';
@@ -94,7 +82,7 @@ h2, h3{
  
  body {
 	margin : 0;
-    background-image: url("../img/tile.jpg");
+    background-image: url("../img/tile2.jpg");
 	margin: 0 auto;
 	padding: 0;
 	max-width: 100%;
