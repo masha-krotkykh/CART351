@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EXAMPLES</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    background: black;
+  }
+</style>
+<script>
+  window.onload = function(){
+
+    let canvas = document.getElementById("testCanvas");
+
+    let context = canvas.getContext("2d");
+//Empty array
+    let shapeList = [];
+    const NUM_SHAPES = 5;
+
+    // Checking clicked object
+
+    canvas.addEventListener("mousedown", function(event){
+        console.log("canvas mouse clicked");
+        //Collision detection function
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTest(event);
+        }
+    });
+
+    canvas.addEventListener("mousemove", function(event){
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTestOver(event);
+        }
+    });
+
+    for(let i=0; i<NUM_SHAPES; i++){
+      let r = Math.floor((Math.random()*255)+1);
+      let g = Math.floor((Math.random()*255)+1);
+      let b = Math.floor((Math.random()*255)+1);
+
+      shapeList.push(new CustomShape(i*70+100, canvas.height/2,50,50,r,g,b,1.0,(i%5)+2,(i%6)+1,i));
+    }
+
+    // new instance (there are many different ways)
+    // let myShape = new CustomShape(canvas.width/2, canvas.height/2,50,50,255,0,0,1.0);
+
+
+    requestAnimationFrame(run);
+
+    function run(){
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      // myShape.display();
+      // myShape.update();
+
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].display();
+        // shapeList[i].update();
+        }
+      requestAnimationFrame(run);
+
+    }
+
+
+// CONSTRUCTOR FUNCTION
+    function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY,eid){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+        this.innerH = this.h/2;
+        this.innerW = this.w/2;
+
+        this.speedX = speedX;
+        this.speedY = speedY;
+
+        this.eID = eid;
+
+        this.isPressed = false;
+
+        this.isOver = false;
+// ROTATING
+        this.theta = 0;
+
+        this.display = function(){
+          if(this.isOver === true){
+            this.a -=0.01;
+          }
+          this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+          context.fillStyle = this.col;
+// ROTATING
+          context.save();
+          context.translate(this.x, this.y);
+          context.rotate(this.theta);
+          if(this.isPressed ===true){
+            this.theta+=0.2;
+          }
+
+          context.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+          context.clearRect(-this.w/2+this.innerW/2, -this.h/2+this.innerH/2, this.innerW, this.innerH);
+
+          context.restore();
+
+          this.innerX = this.x + this.innerW/2;
+          this.innerY = this.y + this.innerH/2;
+        }
+
+        this.update = function(){
+          if(this.x > canvas.width || this.x < 0){
+            this.speedX *=-1;
+          }
+          if(this.y > canvas.height || this.y < 0){
+            this.speedY *=-1;
+          }
+
+        this.x+= this.speedX;
+        this.y+= this.speedY;
+        this.innerX = this.x + this.innerW/2;
+        this.innerY = this.y + this.innerH/2;
+    }
+
+    this.hitTest = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+        console.log("rect pressed::: "+this.eID);
+        this.isPressed = !this.isPressed;
+      }
+    }
+
+    this.hitTestOver = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+        console.log("rect over::: "+this.eID);
+        this.isOver = true;
+      }
+      else{
+        this.isOver = false;
+      }
+    }
+
+
+  }
+}
+</script>
+
+</head>
+<body>
+  <canvas id="testCanvas" width = 500 height = 500></canvas>
+</body>
+</html>
