@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EXERCISE 02</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    background: black;
+  }
+</style>
+<script>
+  window.onload = function(){
+    let canvas = document.getElementById("testCanvas");
+    let context = canvas.getContext("2d");
+//Empty array of synthetic shapes
+    let shapeList = [];
+    const NUM_SHAPES = 10;
+
+    // Checking clicked object
+    
+    canvas.addEventListener("mousedown", function(event){
+    	console.log("canvas mouse clicked");
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTest(event);
+        }
+    });
+
+    canvas.addEventListener("mousemove", function(event){
+        console.log("canvas mouse over");
+        //Collision detection function
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTestOver(event);
+        }
+    });
+
+    
+
+    for(let i=0; i<NUM_SHAPES; i++){
+      let r = 255;
+      let g = 255;
+      let b = 255;
+      let a = 1.0;
+      let rSpeed = 0;
+      let size = Math.floor((Math.random()*100)+10);
+      let x = Math.floor((Math.random()*canvas.width));
+      let y = Math.floor((Math.random()*canvas.height));
+
+      shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,rSpeed,i));
+    }
+
+    requestAnimationFrame(run);
+
+    function run(){
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].display();
+//         shapeList[i].update();
+        }
+      requestAnimationFrame(run);
+
+    }
+
+// CONSTRUCTOR FUNCTION
+    function CustomShape(x,y,w,h,r,g,b,a,rSpeed,eid){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+        this.innerH = this.h/2;
+        this.innerW = this.w/2;
+		this.rSpeed = rSpeed;
+        this.eID = eid;
+        this.isOver = false;
+        this.isPressed = false; 
+        this.cChange = 2;       
+		
+        this.display = function(){
+          
+          if(this.isPressed === true) {
+          	if(this.r > 0 && this.r < 255) {
+          		this.r += Math.floor((Math.random()*50)-25);
+          	}
+          	else if(this.r <= 0) {
+          		this.r +=this.cChange;
+          	}
+          	else if(r >= 255) {
+          		this.r -=this.cChange; 
+          	}
+          	
+          	if(this.g > 0 && this.g <= 255) { 
+          		this.g += Math.floor((Math.random()*50)-25); 
+          	}
+          	else if(this.g <= 0) {
+          		this.g +=this.cChange;
+          	}
+          	else if(g >= 255) {
+          		this.g -=this.cChange; 
+          	}
+          	
+          	if(this.b > 0 && this.b <= 255) {
+          		this.b += Math.floor((Math.random()*50)-25); 
+			}
+			else if(this.b <= 0) {
+          		this.b +=this.cChange;
+          	}
+          	else if(b >= 255) {
+          		this.b -=this.cChange; 
+          	} 
+          }
+          	
+          else if(this.isPressed ===false) {
+          	if(this.r < 255) {
+          		this.r += this.cChange;
+          	}         	
+          	if(this.g < 255) {
+          		this.g += this.cChange;
+          	}
+          	if(this.b < 255) {
+          		this.b += this.cChange;
+          	}
+          }
+
+		  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+          context.fillStyle = this.col;
+          
+// ROTATING
+       	 this.theta = 0;
+          context.save();
+          context.translate(this.x, this.y);
+          
+          if(this.isOver ===true){
+          this.rSpeed+=0.2;
+          }
+          else if(this.isOver ===false && this.rSpeed > 0){
+        	this.rSpeed-=0.02;
+          }
+        
+
+          context.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+          context.clearRect(-this.w/2+this.innerW/2, -this.h/2+this.innerH/2, this.innerW, this.innerH);
+
+          context.restore();
+
+          this.innerX = this.x + this.innerW/2;
+          this.innerY = this.y + this.innerH/2;
+        }
+
+
+    this.hitTest = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w){
+        console.log("rect pressed::: "+this.eID);
+        this.isPressed = true;
+      }
+      else {
+      	this.isPressed = false;
+      }
+    }
+
+    this.hitTestOver = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+        console.log("rect over::: "+this.eID);
+        this.isOver = true;
+      }
+      else{
+        this.isOver = false;
+      }
+    }
+
+
+  }
+}
+</script>
+
+</head>
+<body>
+  <canvas id="testCanvas" width="500" height="500"></canvas>
+</body>
+</html>
