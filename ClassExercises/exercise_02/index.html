@@ -48,7 +48,7 @@
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
 
-      shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,rSpeed,i));
+      shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));
     }
 
     requestAnimationFrame(run);
@@ -65,7 +65,7 @@
     }
 
 // CONSTRUCTOR FUNCTION
-    function CustomShape(x,y,w,h,r,g,b,a,rSpeed,eid){
+    function CustomShape(x,y,w,h,r,g,b,a,eid,rSpeed){
         this.x = x;
         this.y = y;
         this.w = w;
@@ -76,12 +76,14 @@
         this.a = a;
         this.innerH = this.h/2;
         this.innerW = this.w/2;
-		this.rSpeed = rSpeed;
         this.eID = eid;
         this.isOver = false;
         this.isPressed = false; 
         this.cChange = 10;     
         this.cFade = 1;   
+        
+        this.theta = 0;
+        this.rSpeed = 0;
 		
         this.display = function(){
           
@@ -135,16 +137,20 @@
           context.fillStyle = this.col;
           
 // ROTATING
-       	 this.theta = 0;
+       	
           context.save();
           context.translate(this.x, this.y);
+          context.rotate(this.theta);
           
           if(this.isOver ===true){
-          this.rSpeed+=0.2;
+          this.rSpeed += 0.005;
           }
+          
           else if(this.isOver ===false && this.rSpeed > 0){
-        	this.rSpeed-=0.02;
+        	this.rSpeed-=0.003;
+        	// this.theta = this.theta+this.rSpeed;
           }
+			this.theta += this.rSpeed;
         
 
           context.fillRect(-this.w/2, -this.h/2, this.w, this.h);
