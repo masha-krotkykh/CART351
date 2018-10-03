@@ -15,9 +15,9 @@
   window.onload = function(){
     let canvas = document.getElementById("testCanvas");
     let context = canvas.getContext("2d");
-//Empty array of synthetic shapes
+//Empty array of shapes
     let shapeList = [];
-    const NUM_SHAPES = 2500;
+    const NUM_SHAPES = 500;
 
    // Checking clicked object
     
@@ -43,14 +43,13 @@
       let b = 0;
       let a = 1.0;
       let rSpeed = 2;
-      let h = Math.floor((Math.random()*10)+1);
-      let w = h*10;
+	  let rad = Math.floor((Math.random()*50)+1);
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
-      let xx = x + w/2 - h/2;
-      let yy = y - w/2 + h/2;
+      let xx = x + rad;
+      let yy = y - rad;
  
-      shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,i));
+      shapeList.push(new CustomShape(x,y,xx,yy,rad,r,g,b,a,i));
     }
 
     requestAnimationFrame(run);
@@ -66,13 +65,14 @@
     }
 
 // CONSTRUCTOR FUNCTION
-    function CustomShape(x,y,xx,yy,w,h,r,g,b,a,eid,rSpeed){
+    function CustomShape(x,y,xx,yy,rad,r,g,b,a,eid,rSpeed){
         this.x = x;
         this.y = y;
         this.xx = xx;
         this.yy = yy;
-        this.w = w;
-        this.h = h;
+ //        this.w = w;
+//         this.h = h;
+		this.rad = rad;
         this.r = r;
         this.g = g;
         this.b = b;
@@ -86,7 +86,7 @@
         
         this.theta = 0;
         this.rSpeed = 0;
-        this.maxrSpeed = .4;
+        this.maxrSpeed = .8;
 		
         this.display = function(){
           
@@ -95,31 +95,31 @@
           	if(this.r <= 0) {
           		this.r +=this.cChange;
           	}
-          	else if(this.r >= 150) {
+          	else if(this.r >= 250) {
           		this.r -=this.cChange; 
           	}
-          	else if(this.r > 0 && this.r < 150) {
-          		this.r -= Math.floor((Math.random()*5)-3);
+          	else if(this.r > 0 && this.r < 250) {
+          		this.r -= Math.floor((Math.random()*6)-3);
           	}
           	
           	if(this.g <= 0) {
           		this.g +=this.cChange;
           	}
-          	else if(this.g >= 150) {
+          	else if(this.g >= 250) {
           		this.g -=this.cChange; 
           	}
-          	else if(this.g > 0 && this.g < 150) {
-          		this.g -= Math.floor((Math.random()*5)-3);
+          	else if(this.g > 0 && this.g < 250) {
+          		this.g -= Math.floor((Math.random()*6)-3);
           	}
         	
           	if(this.b <= 0) {
           		this.b +=this.cChange;
           	}
-          	else if(this.b >= 150) {
+          	else if(this.b >= 250) {
           		this.b -=this.cChange; 
           	}
-          	else if(this.b > 0 && this.b < 150) {
-          		this.b -= Math.floor((Math.random()*5)-3);
+          	else if(this.b > 0 && this.b < 250) {
+          		this.b -= Math.floor((Math.random()*6)-3);
           	}
 
           }
@@ -137,8 +137,9 @@
           }
 
 		  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
-          context.fillStyle = this.col;
-          
+          // context.fillStyle = this.col;
+          context.stroke();
+          context.strokeStyle = this.col;
 // ROTATING
        	
           context.save();
@@ -156,14 +157,18 @@
           
           else if(this.isOver ===false && this.rSpeed > 0){
         	this.rSpeed-=0.001;
-        	// this.theta = this.theta+this.rSpeed;
           }
+			
 			this.theta += this.rSpeed;
         
 
-          context.fillRect(-this.w/2, -this.h/2, this.w, this.h);
-          context.fillRect(-this.h/2, -this.w/2, this.h, this.w);
-          
+//           context.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+//           context.fillRect(-this.h/2, -this.w/2, this.h, this.w);
+		  context.beginPath();
+		  context.arc(0,0,this.rad,0*Math.PI,1.5*Math.PI);
+		  context.lineWidth = this.rad/10;
+		  context.stroke();
+          context.strokeStyle = this.col;
 
           context.restore();
 
@@ -172,7 +177,7 @@
 
     this.hitTest = function(){
 
-      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w){
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.rad*2){
         console.log("rect pressed::: "+this.eID);
         this.isPressed = !this.isPressed;
       }
@@ -180,14 +185,12 @@
 
     this.hitTestOver = function(){
 
-      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.rad*4){
         console.log("rect over::: "+this.eID);
         this.isOver = true;
         
       }
-      else if(Math.sqrt(Math.pow((event.clientX),2)+Math.pow((event.clientY),2))>canvas.width){
-      	this.isOver = false;
-      }
+
       else{
         this.isOver = false;
       }
