@@ -9,18 +9,23 @@
   }
   canvas {
     background: white;
+    /* width: 100%;
+    height: 100%; */
+
   }
 </style>
 <script>
   window.onload = function(){
     let canvas = document.getElementById("testCanvas");
     let context = canvas.getContext("2d");
-//Empty array of synthetic shapes
+    context.canvas.width  = window.innerWidth;
+    context.canvas.height = window.innerHeight;
+//Empty array of  shapes
     let shapeList = [];
     const NUM_SHAPES = 50;
 
     // Checking clicked object
-    
+
     canvas.addEventListener("mousedown", function(event){
     	console.log("canvas mouse clicked");
         for(let i=0; i<NUM_SHAPES; i++){
@@ -36,7 +41,7 @@
         }
     });
 
-    
+
 
     for(let i=0; i<NUM_SHAPES; i++){
       let r = 0;
@@ -47,7 +52,7 @@
       let size = Math.floor((Math.random()*100)+20);
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
- 
+
       shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));
     }
 
@@ -67,7 +72,7 @@
     function CustomShape(x,y,size,size,r,g,b,a,eid,rSpeed){
         this.x = x;
         this.y = y;
-		this.size = size;
+		    this.size = size;
         this.r = r;
         this.g = g;
         this.b = b;
@@ -76,54 +81,54 @@
         this.innerW = this.size/2;
         this.eID = eid;
         this.isOver = false;
-        this.isPressed = false; 
-        this.cChange = 10;     
-        this.cFade = 1;   
-        
+        this.isPressed = false;
+        this.cChange = 10;
+        this.cFade = 1;
+
         this.theta = 0;
         this.rSpeed = 0;
         this.maxrSpeed = .2;
-		
+
         this.display = function(){
-          
+
           if(this.isPressed === true) {
-          	
+
           	if(this.r <= 0) {
           		this.r +=this.cChange;
           	}
           	else if(this.r >= 250) {
-          		this.r -=this.cChange; 
+          		this.r -=this.cChange;
           	}
           	else if(this.r > 0 && this.r < 250) {
           		this.r -= Math.floor((Math.random()*6)-3);
           	}
-          	
+
           	if(this.g <= 0) {
           		this.g +=this.cChange;
           	}
           	else if(this.g >= 250) {
-          		this.g -=this.cChange; 
+          		this.g -=this.cChange;
           	}
           	else if(this.g > 0 && this.g < 250) {
           		this.g -= Math.floor((Math.random()*6)-3);
           	}
-        	
+
           	if(this.b <= 0) {
           		this.b +=this.cChange;
           	}
           	else if(this.b >= 250) {
-          		this.b -=this.cChange; 
+          		this.b -=this.cChange;
           	}
           	else if(this.b > 0 && this.b < 250) {
           		this.b -= Math.floor((Math.random()*6)-3);
           	}
 
           }
-          	
+
           else if(this.isPressed ===false) {
           	if(this.r > 0) {
           		this.r -= this.cFade;
-          	}         	
+          	}
           	if(this.g > 0) {
           		this.g -= this.cFade;
           	}
@@ -134,13 +139,13 @@
 
 		  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
           context.fillStyle = this.col;
-          
+
 // ROTATING
-       	
+
           context.save();
           context.translate(this.x, this.y);
           context.rotate(this.theta);
-          
+
           if(this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
           	if(this.rSpeed < .1) {
           		this.rSpeed = .1;
@@ -149,13 +154,13 @@
           		this.rSpeed += 0.001;
           	}
           }
-          
+
           else if(this.isOver ===false && this.rSpeed > 0){
         	this.rSpeed-=0.001;
         	// this.theta = this.theta+this.rSpeed;
           }
 			this.theta += this.rSpeed;
-        
+
 
           context.fillRect(-this.size/2, -this.size/2, this.size, this.size);
           context.clearRect(-this.size/2+this.innerW/2, -this.size/2+this.innerH/2, this.innerW, this.innerH);
@@ -193,6 +198,6 @@
 
 </head>
 <body>
-  <canvas id="testCanvas" width="800" height="600"></canvas>
+  <canvas id="testCanvas"></canvas>
 </body>
 </html>

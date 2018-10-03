@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<!-- https://home.openweathermap.org/ -->
+<html>
+<head>
+<title>Open Weather Example</title>
+<style>
+body{
+  width:100%;
+  margin-left:2%;
+}
+
+h2{
+  background:white;
+    text-align:center;
+    color:#9e66b4;
+}
+#ResWeather{
+  width:44%;
+  clear:both;
+  margin-top:2%;
+  margin-left:8%;
+}
+.container {
+    background:#9e66b4;
+    overflow:hidden;
+
+}
+ul{
+  background:#cdb2d7;
+  color:black;
+  padding:4%;
+  list-style:none;
+  margin-bottom:1%;
+  font-size:1.2em;
+}
+img{
+  float:left;
+}
+.pRes{
+  color:white;
+
+}
+.pContainer{
+    float:left;
+    padding-left:2%;
+    font-size:1.2em;
+}
+.searchCrit{
+  display:inline-block;
+  margin-right:3%;
+  background:#cdb2d7;
+  padding:2%;
+  border-color: #9e66b4;
+  border-width:2px;
+  border-style: solid;
+  width:25%;
+}
+.searchCrit p {
+  background:white;
+  color:#9e66b4;
+  font-weight: bold;
+  padding:2px;
+  font-size:1.2em;
+}
+</style>
+<script src = "jquery/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+//http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
+let myKey = "0bef928982350078b0d564afdd383f25";
+
+
+$("#searchButton").click(getWeatherByCity);
+$("#buttonLocation").click(getWeatherByLoc);
+
+/**** get weather by user location **/
+function getWeatherByLoc(){
+console.log("get loc");
+if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(usePosition);
+    } else {
+        console.log( "Geolocation is not supported by this browser.");
+    }
+
+    function usePosition(position) {
+    console.log("Latitude: " + position.coords.latitude +
+    "Longitude: " + position.coords.longitude);
+    $("#ResWeather").empty();
+    //api.openweathermap.org/data/2.5/weather?lat=35&lon=139
+
+    let urlLoc = "api.openweathermap.org/data/2.5/weather?lat="+position.coords.latitude+"&lon="+ position.coords.longitude;
+    let urlToSend = "https:"+urlLoc +"&APPID="+myKey;
+    // url and callback
+    $.getJSON(urlToSend,function(results){displayResults(results,results.name);})
+
+       //fail
+       .fail(function() {
+         console.log( "error" );
+       });
+       // getJSON
+}//function usePosition
+}
+
+
+/**** get weather by city input **/
+function getWeatherByCity(){
+console.log("get city");
+$("#ResWeather").empty();
+let searchCity= $("#citySearch").val();
+console.log(searchCity);
+//query using city vlue from search
+let urlCity = "api.openweathermap.org/data/2.5/weather?q="+searchCity;
+let urlToSend = "https:"+urlCity +"&APPID="+myKey;
+// url and callback
+    $.getJSON(urlToSend,function(results){displayResults(results,searchCity);})
+       //fail
+       .fail(function() {
+         console.log( "error" );
+       });
+       // getJSON
+} //getWeather
+
+function displayResults(results,searchCity){
+         console.log(results);
+         let sampleH = $('<h2>');
+         $(sampleH).text("results for:: "+ searchCity)
+
+         let weatherProp  = results.weather; //PART OF THE JSON OBJECT
+         //IS AN ARRAY...
+
+         let container = $('<div>').addClass("container");
+         let pContainer = $('<div>').addClass("pContainer");
+         $(sampleH).appendTo(container);
+
+         // go through the array (is an array of objects)
+         for(let i=0; i<weatherProp.length; i++){
+           //get the object
+           let weatherObj = weatherProp[i];
+           // iterate through the key-value pairs for this object
+           //property -> key:
+           //weatherObj[property] is the value
+
+           for (let property in weatherObj) {
+             //if it is the icon property-> get the image
+             if(property === "icon"){
+               let iconUrl = "http://openweathermap.org/img/w/" + weatherObj[property] + ".png";
+               let imageIcon = $('<img>');
+               $(imageIcon).attr("src", iconUrl);
+               $(imageIcon).appendTo(container);
+
+             }
+             //not icon - so get the text
+             else{
+                let sampleP = $('<p>').addClass("pRes");
+                $(sampleP).text(property+":: "+ weatherObj[property]);
+                $(sampleP).appendTo(pContainer);
+              }
+           }//for
+         } //iterate over array
+
+          $(pContainer).appendTo(container);
+           $(container).appendTo('#ResWeather');
+
+           let sampleList= $("<ul>");
+           // go through the results.main obj -> part of the JSON object
+           // iterate through the key-value pairs for this object
+           //property -> key:
+           //results.main[property] is the value
+           for (let property in results.main) {
+             let listItem = $('<li>');
+             $(listItem).text(property+":: "+ results.main[property]);
+             $(listItem).appendTo(sampleList);
+           }
+
+          // get the coordinates object:
+          // go through the results.coord obj -> part of the JSON object
+          // iterate through the key-value pairs for this object
+          //property -> key:
+          //results.coord[property] is the value
+           for (let property in results.coord) {
+             let listItem = $('<li>');
+             $(listItem).text(property+":: "+ results.coord[property]);
+             $(listItem).appendTo(sampleList);
+           }
+
+
+           $(sampleList).appendTo('#ResWeather');
+
+       }
+
+});
+</script>
+</head>
+
+<body>
+  <h1>
+  	Enter in the search criteria for weather:
+  </h1>
+
+<div class = "searchCrit">
+  <p>Type in a search keyword:</p>
+  <input type="text" id="citySearch" value="city" />
+  <input type="button" value="Search!" id="searchButton" />
+</div>
+<div class = "searchCrit">
+  <p>Or search by your location::: </p>
+  <input type="button" value="Search!" id="buttonLocation" />
+</div>
+
+
+  <div id  = "ResWeather"> </div>
+
+</body>
+</html>

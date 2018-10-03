@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Accessing FLICKR data using the jQuery.getJSON() </title>
+<style>
+body{
+  width:100%;
+}
+.aCell {
+  overflow: hidden;
+    background:#9e66b4;
+    max-width:450px;
+    margin-bottom:2%;
+    margin-left:25%;
+
+}
+img {
+    width: 250px;
+    height:auto;
+
+}
+p{
+  width:75%;
+}
+.itemClass{
+  color:white;
+  background:#cdb2d7;
+  margin-left:25px;
+  padding:5%;
+  width:400px;
+  font-size:1em;
+}
+</style>
+<script src = "jquery/jquery-3.3.1.min.js"></script>
+<script>
+
+$(document).ready(function() {
+//assign call back to click event ...
+
+$("#searchButton").click(getFlicker);
+/**** function callback from button ***/
+function getFlicker()
+{
+  $("#images").empty(); //empty
+  let searchItem = $("#searchText").val();
+  console.log(searchItem);
+  let flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON(flickerAPI, {tags: searchItem,tagmode: "any",format: "json"},displayResults)
+      //fail
+      .fail(function() {
+        console.log( "error" );
+      });
+      // getJSON
+}//function
+
+/**** function callback to display results ***/
+function displayResults(results){
+  console.log(results);
+  for(let i=0; i<results.items.length; i++)
+  {
+      let item = results.items[i];
+      console.log(item.media.m);
+      $('<div>').attr("id","container"+i).appendTo("#images");
+      $("#container"+i).addClass("aCell");
+      $("<div>").html(item.title+item.description).addClass("itemClass").appendTo("#container"+i);
+      // only show up to 10 images
+      if ( i === 10 ) {return false;}
+  }//for
+}
+
+
+}); //document.ready...
+</script>
+
+</head>
+<body>
+
+<h1>
+	Enter in the search criteria for flickr:
+</h1>
+<div>
+<p>Type in a search keyword:</p>
+<input type="text" id="searchText" value="search Item" />
+<input type="button" value="Search!" id="searchButton" />
+</p>
+</div>
+<div id="images"></div>
+
+</body>
+</html>
