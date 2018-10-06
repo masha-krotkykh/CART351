@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>EXERCISE 02</title>
+<title>Assignment_2</title>
 <style>
   body {
     margin: 0;
@@ -9,22 +9,21 @@
   }
   canvas {
     background: white;
-    /* width: 100%;
-    height: 100%; */
-
   }
 </style>
 <script>
+// Defining that everything has to start happening after the window is loaded
   window.onload = function(){
     let canvas = document.getElementById("testCanvas");
     let context = canvas.getContext("2d");
+//Making canvas fullscreen
     context.canvas.width  = window.innerWidth;
     context.canvas.height = window.innerHeight;
-//Empty array of  shapes
+//Empty array of shapes to be filled in later
     let shapeList = [];
-    const NUM_SHAPES = 50;
+    const NUM_SHAPES = 500;
 
-    // Checking clicked object
+// Checking clicked object and adding EvenetListeners
 
     canvas.addEventListener("mousedown", function(event){
     	console.log("canvas mouse clicked");
@@ -42,22 +41,23 @@
     });
 
 
-
+// Adding basic parameters for shapes (colour, speed, quantity, position)
     for(let i=0; i<NUM_SHAPES; i++){
       let r = 0;
       let g = 0;
       let b = 0;
       let a = 1.0;
       let rSpeed = 2;
-      let size = Math.floor((Math.random()*100)+20);
+// Making sizes relative to the window size      
+      let size = Math.floor((Math.random()*context.canvas.width/20)+10);
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
-
+// And constructing the shapes
       shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));
     }
 
     requestAnimationFrame(run);
-
+// Animating the shapes
     function run(){
       context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -70,9 +70,10 @@
 
 // CONSTRUCTOR FUNCTION
     function CustomShape(x,y,size,size,r,g,b,a,eid,rSpeed){
+// position, size, colour, opacity, cut-out sizes, event booleans, colour change values    
         this.x = x;
         this.y = y;
-		    this.size = size;
+		this.size = size;
         this.r = r;
         this.g = g;
         this.b = b;
@@ -84,13 +85,14 @@
         this.isPressed = false;
         this.cChange = 10;
         this.cFade = 1;
-
+// initial rotation is set to zero, max rotation speed is limited to 0.5
         this.theta = 0;
         this.rSpeed = 0;
-        this.maxrSpeed = .2;
-
+        this.maxrSpeed = .4;
+        
+// DISPLAY FUNCTION 
+// random colour change on mouse press
         this.display = function(){
-
           if(this.isPressed === true) {
 
           	if(this.r <= 0) {
@@ -125,6 +127,7 @@
 
           }
 
+// !mousePressed leads to colours fading back to black
           else if(this.isPressed ===false) {
           	if(this.r > 0) {
           		this.r -= this.cFade;
@@ -141,7 +144,7 @@
           context.fillStyle = this.col;
 
 // ROTATING
-
+// If mouseOver and the current rotating speed does not exceed max speed, increase the speed by value. If the speed is zero, jumpstart from a higher value
           context.save();
           context.translate(this.x, this.y);
           context.rotate(this.theta);
@@ -154,24 +157,22 @@
           		this.rSpeed += 0.001;
           	}
           }
-
+// When mouseOver is false, start slowing the rotation down slowly by a value
           else if(this.isOver ===false && this.rSpeed > 0){
-        	this.rSpeed-=0.001;
-        	// this.theta = this.theta+this.rSpeed;
+        	this.rSpeed-=0.0007;
           }
-			this.theta += this.rSpeed;
+		  this.theta += this.rSpeed;
 
-
+// Display the shapes finally
           context.fillRect(-this.size/2, -this.size/2, this.size, this.size);
           context.clearRect(-this.size/2+this.innerW/2, -this.size/2+this.innerH/2, this.innerW, this.innerH);
+          context.fillRect(-this.size/4+this.innerW/4, -this.size/4+this.innerH/4, this.innerW/2, this.innerH/2);
 
           context.restore();
-
-          this.innerX = this.x + this.innerW/2;
-          this.innerY = this.y + this.innerH/2;
         }
 
-
+// Checking if the shape or its roundabouts were clicked to make surrounding shapes react as well
+// if so shape is considered clicked and mousePressed becomes true/false
     this.hitTest = function(){
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size){
@@ -180,12 +181,14 @@
       }
     }
 
+// Checking if the shape (or its area) is being hovered over to initiate mouseOver event.
     this.hitTestOver = function(){
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){
         console.log("rect over::: "+this.eID);
         this.isOver = true;
       }
+// When hovering stops, mouseOver becomes false
       else{
         this.isOver = false;
       }
