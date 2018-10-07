@@ -21,7 +21,7 @@
     context.canvas.height = window.innerHeight;
 //Empty array of shapes to be filled in later
     let shapeList = [];
-    const NUM_SHAPES = 500;
+    const NUM_SHAPES = 100;
 
 // Checking clicked object and adding EvenetListeners
 
@@ -221,8 +221,8 @@
           else if(cross === true) {
           	square = false;
           	circle = false;
-          	context.fillRect(-this.size*2, -this.size/4, this.size*5, this.size/10);
-          	context.fillRect(-this.size/4, -this.size*2, this.size/10, this.size*5);	
+          	context.fillRect((-this.size*3), -this.size/20, this.size*6, this.size/10);
+          	context.fillRect(-this.size/20, (-this.size*3), this.size/10, this.size*6);	
           
           }
 // If "3" is pressed, "CIRCLES" becomes true (false by default) and circles are displayed          
