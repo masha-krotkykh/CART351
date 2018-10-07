@@ -26,19 +26,22 @@
 // Checking clicked object and adding EvenetListeners
 
     canvas.addEventListener("mousedown", function(event){
-    	console.log("canvas mouse clicked");
         for(let i=0; i<NUM_SHAPES; i++){
           shapeList[i].hitTest(event);
         }
     });
 
     canvas.addEventListener("mousemove", function(event){
-        console.log("canvas mouse over");
         //Collision detection function
         for(let i=0; i<NUM_SHAPES; i++){
           shapeList[i].hitTestOver(event);
         }
     });
+    
+    document.onkeypress = function() {
+        shapeshift()
+    };
+    
 
 
 // Adding basic parameters for shapes (colour, speed, quantity, position)
@@ -49,11 +52,19 @@
       let a = 1.0;
       let rSpeed = 2;
 // Making sizes relative to the window size      
-      let size = Math.floor((Math.random()*context.canvas.width/20)+10);
+      let size = Math.floor((Math.random()*canvas.width/10)+2);
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
+      
+      
+      var square = true;
+      var cross = false;
+      var circle = false;
+      
+      
 // And constructing the shapes
       shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));
+      
     }
 
     requestAnimationFrame(run);
@@ -67,6 +78,30 @@
       requestAnimationFrame(run);
 
     }
+    
+// Function that defines which shapes will be displayed    
+    function shapeshift() {
+    	console.log("canvas key pressedgddfgd ");
+    	if(event.keyCode === 49) {
+    		console.log("1 key is pressed");
+    		square = true;
+    		cross = false;
+    		circle = false;
+    	}
+    	else if(event.keyCode === 50) {
+    		console.log("2 key is pressed");
+    		square = false;
+    		cross = true;
+    		circle = false;
+    	}
+    	else if(event.keyCode === 51) {
+    		console.log("3 key is pressed");
+    		square = false;
+    		cross = false;
+    		circle = true;
+    	}
+    }
+
 
 // CONSTRUCTOR FUNCTION
     function CustomShape(x,y,size,size,r,g,b,a,eid,rSpeed){
@@ -80,6 +115,7 @@
         this.a = a;
         this.innerH = this.size/2;
         this.innerW = this.size/2;
+        
         this.eID = eid;
         this.isOver = false;
         this.isPressed = false;
@@ -88,7 +124,7 @@
 // initial rotation is set to zero, max rotation speed is limited to 0.5
         this.theta = 0;
         this.rSpeed = 0;
-        this.maxrSpeed = .4;
+        this.maxrSpeed = .5;
         
 // DISPLAY FUNCTION 
 // random colour change on mouse press
@@ -127,7 +163,6 @@
 
           }
 
-// !mousePressed leads to colours fading back to black
           else if(this.isPressed ===false) {
           	if(this.r > 0) {
           		this.r -= this.cFade;
@@ -144,7 +179,7 @@
           context.fillStyle = this.col;
 
 // ROTATING
-// If mouseOver and the current rotating speed does not exceed max speed, increase the speed by value. If the speed is zero, jumpstart from a higher value
+
           context.save();
           context.translate(this.x, this.y);
           context.rotate(this.theta);
@@ -157,38 +192,60 @@
           		this.rSpeed += 0.001;
           	}
           }
-// When mouseOver is false, start slowing the rotation down slowly by a value
+
           else if(this.isOver ===false && this.rSpeed > 0){
-        	this.rSpeed-=0.0007;
+        	this.rSpeed-=0.0005;
           }
 		  this.theta += this.rSpeed;
 
-// Display the shapes finally
-          context.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-          context.clearRect(-this.size/2+this.innerW/2, -this.size/2+this.innerH/2, this.innerW, this.innerH);
-          context.fillRect(-this.size/4+this.innerW/4, -this.size/4+this.innerH/4, this.innerW/2, this.innerH/2);
 
+// If "1" is pressed, "SQUARES" becomes true (true by default) and squares are displayed
+		  if(square === true) {	
+		  	cross = false;
+		  	circle = false;
+          	context.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+          	context.clearRect(-this.size/2+this.innerW/2, -this.size/2+this.innerH/2, this.innerW, this.innerH);
+          	context.fillRect(-this.size/4+this.innerW/4, -this.size/4+this.innerH/4, this.innerW/2, this.innerH/2);
+          	this.innerX = this.x + this.innerW/2;
+          	this.innerY = this.y + this.innerH/2;
+          }
+// If "2" is pressed, "CROSSES" becomes true (false by default) and crosses are displayed          
+          else if(cross === true) {
+          	square = false;
+          	circle = false;
+          	context.fillRect(-this.size*2, -this.size/4, this.size*5, this.size/10);
+          	context.fillRect(-this.size/4, -this.size*2, this.size/10, this.size*5);	
+          
+          }
+// If "3" is pressed, "CIRCLES" becomes true (false by default) and circles are displayed          
+          else if(circle === true) {
+          	square = false;
+          	cross = false;
+          	context.beginPath();
+          	
+		  context.arc(0,0,this.size,0*Math.PI,1.5*Math.PI);
+		  context.lineWidth = this.size/10;
+		  context.stroke();
+          context.strokeStyle = this.col;
+          }
+
+          
           context.restore();
         }
 
-// Checking if the shape or its roundabouts were clicked to make surrounding shapes react as well
-// if so shape is considered clicked and mousePressed becomes true/false
+
     this.hitTest = function(){
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size){
-        console.log("rect pressed::: "+this.eID);
         this.isPressed = !this.isPressed;
       }
     }
 
-// Checking if the shape (or its area) is being hovered over to initiate mouseOver event.
     this.hitTestOver = function(){
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){
-        console.log("rect over::: "+this.eID);
         this.isOver = true;
       }
-// When hovering stops, mouseOver becomes false
       else{
         this.isOver = false;
       }
