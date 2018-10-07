@@ -21,7 +21,7 @@
     context.canvas.height = window.innerHeight;
 //Empty array of shapes to be filled in later
     let shapeList = [];
-    const NUM_SHAPES = 100;
+    const NUM_SHAPES = 300;
 
 // Checking clicked object and adding EvenetListeners
 
@@ -56,17 +56,17 @@
       let r = 0;
       let g = 0;
       let b = 0;
-      let a = 1.0;
+      let a = .9;
       let rSpeed = 2;
 // Making sizes relative to the window size      
-      let size = Math.floor((Math.random()*canvas.width/10)+2);
+      let size = Math.floor((Math.random()*canvas.width/10)+10);
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
       
       var zoneOut = false;
-      var square = true;
-      var cross = false;
+      var cross = true;
       var circle = false;
+      var square = false;
       
       
 // And constructing the shapes
@@ -91,21 +91,21 @@
     	console.log("canvas key pressedgddfgd ");
     	if(event.keyCode === 49) {
     		console.log("1 key is pressed");
-    		square = true;
-    		cross = false;
+    		cross = true;
     		circle = false;
+    		square = false;
     	}
     	else if(event.keyCode === 50) {
     		console.log("2 key is pressed");
+    		cross = false;
+    		circle = true;
     		square = false;
-    		cross = true;
-    		circle = false;
     	}
     	else if(event.keyCode === 51) {
     		console.log("3 key is pressed");
-    		square = false;
     		cross = false;
-    		circle = true;
+    		circle = false;
+    		square = true;
     	}
     }
 
@@ -182,9 +182,10 @@
           	}
           }
 
-		  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+		  this.col = "rgba("+(250-this.r)+","+(250-this.g)+","+(250-this.b)+","+this.a+")";
           context.fillStyle = this.col;
-          context.strokeStyle = this.col;
+          this.stroke = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+          context.strokeStyle = this.stroke;
 
 // ROTATING
 
@@ -205,49 +206,80 @@
         	this.rSpeed-=0.0005;
           }
 		  this.theta += this.rSpeed;
-
-
-// If "1" is pressed, "SQUARES" becomes true (true by default) and squares are displayed
-		  if(square === true) {	
-		  	cross = false;
-		  	circle = false;
-          	context.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-          	context.clearRect(-this.size/2+this.innerW/2, -this.size/2+this.innerH/2, this.innerW, this.innerH);
-          	context.fillRect(-this.size/4+this.innerW/4, -this.size/4+this.innerH/4, this.innerW/2, this.innerH/2);
-          	this.innerX = this.x + this.innerW/2;
-          	this.innerY = this.y + this.innerH/2;
-          }
-// If "2" is pressed, "CROSSES" becomes true (false by default) and crosses are displayed          
-          else if(cross === true) {
+          
+// If "1" is pressed, "CROSSES" becomes true (true by default) and crosses are displayed          
+         if(cross === true) {
           	square = false;
           	circle = false;
-          	context.fillRect((-this.size*3), -this.size/20, this.size*6, this.size/10);
-          	context.fillRect(-this.size/20, (-this.size*3), this.size/10, this.size*6);	
-          
+
+			context.beginPath();
+			context.moveTo(-this.size*3, 0);
+			context.lineTo(this.size*3, 0);	
+			context.lineWidth = this.size/40;
+		  	context.stroke();
+			context.closePath();
+			
+			context.beginPath();
+			context.moveTo(0, -this.size*3);
+			context.lineTo(0, this.size*3);
+			
+			context.lineWidth = this.size/20;
+		  	context.stroke();
           }
-// If "3" is pressed, "CIRCLES" becomes true (false by default) and circles are displayed          
+          
+// If "2" is pressed, "CIRCLES" becomes true (false by default) and circles are displayed          
           else if(circle === true) {
           	square = false;
           	cross = false;
-          	context.beginPath();	
-		  	context.arc(0,0,this.size,0*Math.PI,1.5*Math.PI);
-		  	context.lineWidth = this.size/10;
+			context.beginPath();	
+		  	context.arc(this.size/3,this.size/3,this.size/2,0,2*Math.PI);
+		  	context.lineWidth = this.size/20;
 		  	context.stroke();
-          	
-          }
+		  }
+		  
+// If "3" is pressed, "SQUARES" becomes true (false by default) and squares are displayed
+		  else if(square === true) {	
+		  	cross = false;
+		  	circle = false;
+		  	
+		  	let step = this.size/7;
+          	context.fillRect(-this.size/2-step, -this.size/2-step, this.size+step*2, this.size+step*2);
+// Draw a square spiral inside square shapes (should have done a while loop :/)
+			context.beginPath();
+			context.moveTo(-this.size/2, -this.size/2);
+			context.lineTo(this.size/2, -this.size/2);
+			context.lineTo(this.size/2, this.size/2);
+			context.lineTo(-this.size/2, this.size/2);
+			context.lineTo(-this.size/2, -this.size/2+step);
+			context.lineTo(this.size/2 - step, -this.size/2+step);
+			context.lineTo(this.size/2 - step, this.size/2-step);
+			context.lineTo(-this.size/2 + step, this.size/2-step);
+			context.lineTo(-this.size/2 + step, -this.size/2+step*2);
+			context.lineTo(this.size/2 - step*2, -this.size/2+step*2);
+			context.lineTo(this.size/2 - step*2, this.size/2-step*2);
+			context.lineTo(-this.size/2 + step*2, this.size/2-step*2);
+			context.lineTo(-this.size/2 + step*2, -this.size/2+step*3);
+			context.lineTo(this.size/2 - step*3, -this.size/2+step*3);
+			context.lineTo(this.size/2 - step*3, this.size/2-step*3);
+			context.lineTo(-this.size/2 + step*3, this.size/2-step*3);
+			context.lineTo(-this.size/2 + step*3, -this.size/2+step*4);
 
-          
+			context.lineWidth = this.size/40;
+		  	context.stroke();
+          }
+   
           context.restore();
         }
 
-
+// Checking for collisions for the collision event to kick in (colour change)
     this.hitTest = function(){
 
-      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size){
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size/2){
         this.isPressed = !this.isPressed;
       }
     }
-
+// Checking if an object or its area are being hovered over. If so, mouseover event occurs (rotation and acceleration) 
+// and zoneOut (mouseout window that stops the rotation) turns false
     this.hitTestOver = function(){
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){
