@@ -23,21 +23,19 @@
     let shapeList = [];
     const NUM_SHAPES = 300;
     
-    
-    
 // Empty array of buttons  
 	let myButtons = [];
 	const MAX_BUTTONS =3;
-	let color = "#808096";  
-	
-	
-	
 
 // Checking clicked object and adding EvenetListeners
     canvas.addEventListener("mousedown", function(event){
         for(let i=0; i<NUM_SHAPES; i++){
           shapeList[i].hitTest(event);
         }
+        
+        for (let i =0; i< myButtons.length;i++){
+     		myButtons[i].hitTestDown(event);
+   		}
     });
 
     canvas.addEventListener("mousemove", function(event){
@@ -81,54 +79,56 @@
     
     //fill buttons array with button objects
 	for (let i =0; i< MAX_BUTTONS;i++){
-		let objW = 40;
+		let objW = canvas.width/40;
 		let offset =10;
-		myButtons.push(new myPushyButton(objW, objW + ((objW+offset)*i),objW/2,i));
+		let color = "#808096";
+		myButtons.push(new myPushyButton(objW, objW + ((objW+offset)*i),objW/2,i,color));
 	}
-	
-
-	
-	
 
     requestAnimationFrame(run);
 // Animating the shapes
     function run(){
-      context.clearRect(0, 0, canvas.width, canvas.height);
+		context.clearRect(0, 0, canvas.width, canvas.height);
 
-      for(let i=0; i<NUM_SHAPES; i++){
-        shapeList[i].display();
-      }
+		for(let i=0; i<NUM_SHAPES; i++){
+        	shapeList[i].display();
+      	}
       
       	//initial display of buttons
-	for(let i=0; i< myButtons.length;i++){
-		myButtons[i].render();
-	}
-      requestAnimationFrame(run);
-
+		for(let i=0; i< myButtons.length;i++){
+			myButtons[i].render();
+		}
+    	requestAnimationFrame(run);
     }
     
-// Function that defines which shapes will be displayed    
-    function shapeshift() {
-    	console.log("canvas key pressedgddfgd ");
-    	if(event.keyCode === 49) {
-    		console.log("1 key is pressed");
+    
+    
+    
+      
+  // Function that defines which shapes will be displayed    
+    function shapeshift(button) {
+    	if(event.keyCode === 49 || button === 0) {
+    		console.log(`this is button ${button}`);
     		cross = true;
     		circle = false;
     		square = false;
     	}
-    	else if(event.keyCode === 50) {
+    	else if(event.keyCode === 50 || button === 1) {
     		console.log("2 key is pressed");
     		cross = false;
     		circle = true;
     		square = false;
     	}
-    	else if(event.keyCode === 51) {
+    	else if(event.keyCode === 51 || button === 2) {
     		console.log("3 key is pressed");
     		cross = false;
     		circle = false;
     		square = true;
     	}
     }
+    
+    
+    
 
 // CONSTRUCTOR FUNCTION
     function CustomShape(x,y,size,size,r,g,b,a,eid,rSpeed){
@@ -312,38 +312,58 @@
       }
     }
   }
-  
-  
-  
-  
-  function myPushyButton(x,y,r,tempId){
+    
+// BUTTONS HIT TEST AND FUNCTIONALITY  
+  	function myPushyButton(x,y,r,tempId,color){
   //member variables
-  this.xPos = x;
-  this.yPos = y;
-  this.radius = r;
+  	this.xPos = x;
+  	this.yPos = y;
+  	this.radius = r;
   // new for updating
-  this.ellipseID = tempId;
-  this.isPressed =false;
+  	this.ellipseID = tempId;
+  	this.isPressed =false;
+  	this.color = color;
 
-//member function
-  this.render =function(){
-      context.fillStyle = color;// change the color we are using
-      context.beginPath();
-      context.arc(this.xPos,this.yPos,this.radius,0, Math.PI * 2, true);
-      context.fill(); // set the fill
-      context.closePath(); //close a path ...
+// member function (drawing buttons)
+ 	 this.render =function(){
+      	context.fillStyle = this.color;
+     	context.beginPath();
+     	context.arc(this.xPos,this.yPos,this.radius,0, Math.PI * 2, true);
+		context.fill(); 
+     	context.closePath(); 
     }
 
-//      hit test down
-//      this.hitTestDown =function(event){
-//        use distance formula
-//        if(Math.sqrt(Math.pow((event.clientX-this.xPos),2) + Math.pow((event.clientY - this.yPos),2))< this.radius){
-//          console.log(`ellipse ${this.ellipseID} was pressed`);
-//          do a switch
-//          this.isPressed = !this.isPressed;
-//        }
-    //  }
-  } //end pushyButton
+
+// Hit test down, collision detection. Shapeshift on pressing the buttons
+    this.hitTestDown =function(){
+    	if(Math.sqrt(Math.pow((event.clientX-this.xPos),2) + Math.pow((event.clientY - this.yPos),2))< this.radius){
+    	// When the button is pressed, it changes colour
+    		this.color = "#505050";
+         	
+         	if(this.ellipseID === 0){
+         		cross = true;
+    			circle = false;
+    			square = false;
+    			
+         	}
+         	else if(this.ellipseID === 1){
+         		cross = false;
+    			circle = true;
+    			square = false;
+         	}
+         	else if(this.ellipseID === 2){
+         		cross = false;
+    			circle = false;
+    			square = true;
+         	}
+         	
+       	}
+       	// When another button is pressed, all previously pressed buttons change their colours back to initial state
+       	else{
+       		this.color = color;	
+       	}
+     }
+  } //end pushyButton            
 }
 </script>
 
