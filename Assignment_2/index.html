@@ -37,7 +37,14 @@
           shapeList[i].hitTestOver(event);
         }
     });
-    
+
+// When cursor is outside canvas, rotation stops    
+    canvas.onmouseout = function() {
+        console.log("Ooopsey");
+        zoneOut = true;
+    };
+
+// On 1-2-3  key pressed shapes change    
     document.onkeypress = function() {
         shapeshift()
     };
@@ -56,7 +63,7 @@
       let x = Math.floor((Math.random()*canvas.width));
       let y = Math.floor((Math.random()*canvas.height));
       
-      
+      var zoneOut = false;
       var square = true;
       var cross = false;
       var circle = false;
@@ -177,6 +184,7 @@
 
 		  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
           context.fillStyle = this.col;
+          context.strokeStyle = this.col;
 
 // ROTATING
 
@@ -184,7 +192,7 @@
           context.translate(this.x, this.y);
           context.rotate(this.theta);
 
-          if(this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
+          if(zoneOut === false && this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
           	if(this.rSpeed < .1) {
           		this.rSpeed = .1;
           	}
@@ -193,7 +201,7 @@
           	}
           }
 
-          else if(this.isOver ===false && this.rSpeed > 0){
+          else if((this.isOver ===false || zoneOut === true)&& this.rSpeed > 0){
         	this.rSpeed-=0.0005;
           }
 		  this.theta += this.rSpeed;
@@ -221,12 +229,11 @@
           else if(circle === true) {
           	square = false;
           	cross = false;
-          	context.beginPath();
+          	context.beginPath();	
+		  	context.arc(0,0,this.size,0*Math.PI,1.5*Math.PI);
+		  	context.lineWidth = this.size/10;
+		  	context.stroke();
           	
-		  context.arc(0,0,this.size,0*Math.PI,1.5*Math.PI);
-		  context.lineWidth = this.size/10;
-		  context.stroke();
-          context.strokeStyle = this.col;
           }
 
           
@@ -245,7 +252,9 @@
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){
         this.isOver = true;
+        zoneOut = false;
       }
+
       else{
         this.isOver = false;
       }
