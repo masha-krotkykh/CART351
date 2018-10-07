@@ -16,15 +16,24 @@
   window.onload = function(){
     let canvas = document.getElementById("testCanvas");
     let context = canvas.getContext("2d");
-//Making canvas fullscreen
+// Making canvas fullscreen
     context.canvas.width  = window.innerWidth;
     context.canvas.height = window.innerHeight;
-//Empty array of shapes to be filled in later
+// Empty array of shapes to be filled in later
     let shapeList = [];
     const NUM_SHAPES = 300;
+    
+    
+    
+// Empty array of buttons  
+	let myButtons = [];
+	const MAX_BUTTONS =3;
+	let color = "#808096";  
+	
+	
+	
 
 // Checking clicked object and adding EvenetListeners
-
     canvas.addEventListener("mousedown", function(event){
         for(let i=0; i<NUM_SHAPES; i++){
           shapeList[i].hitTest(event);
@@ -49,8 +58,6 @@
         shapeshift()
     };
     
-
-
 // Adding basic parameters for shapes (colour, speed, quantity, position)
     for(let i=0; i<NUM_SHAPES; i++){
       let r = 0;
@@ -67,12 +74,21 @@
       var cross = true;
       var circle = false;
       var square = false;
-      
-      
 // And constructing the shapes
-      shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));
-      
+      shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));   
     }
+    
+    
+    //fill buttons array with button objects
+	for (let i =0; i< MAX_BUTTONS;i++){
+		let objW = 40;
+		let offset =10;
+		myButtons.push(new myPushyButton(objW, objW + ((objW+offset)*i),objW/2,i));
+	}
+	
+
+	
+	
 
     requestAnimationFrame(run);
 // Animating the shapes
@@ -82,6 +98,11 @@
       for(let i=0; i<NUM_SHAPES; i++){
         shapeList[i].display();
       }
+      
+      	//initial display of buttons
+	for(let i=0; i< myButtons.length;i++){
+		myButtons[i].render();
+	}
       requestAnimationFrame(run);
 
     }
@@ -108,7 +129,6 @@
     		square = true;
     	}
     }
-
 
 // CONSTRUCTOR FUNCTION
     function CustomShape(x,y,size,size,r,g,b,a,eid,rSpeed){
@@ -215,7 +235,7 @@
 			context.beginPath();
 			context.moveTo(-this.size*3, 0);
 			context.lineTo(this.size*3, 0);	
-			context.lineWidth = this.size/40;
+			context.lineWidth = this.size/20;
 		  	context.stroke();
 			context.closePath();
 			
@@ -291,9 +311,39 @@
         this.isOver = false;
       }
     }
-
-
   }
+  
+  
+  
+  
+  function myPushyButton(x,y,r,tempId){
+  //member variables
+  this.xPos = x;
+  this.yPos = y;
+  this.radius = r;
+  // new for updating
+  this.ellipseID = tempId;
+  this.isPressed =false;
+
+//member function
+  this.render =function(){
+      context.fillStyle = color;// change the color we are using
+      context.beginPath();
+      context.arc(this.xPos,this.yPos,this.radius,0, Math.PI * 2, true);
+      context.fill(); // set the fill
+      context.closePath(); //close a path ...
+    }
+
+//      hit test down
+//      this.hitTestDown =function(event){
+//        use distance formula
+//        if(Math.sqrt(Math.pow((event.clientX-this.xPos),2) + Math.pow((event.clientY - this.yPos),2))< this.radius){
+//          console.log(`ellipse ${this.ellipseID} was pressed`);
+//          do a switch
+//          this.isPressed = !this.isPressed;
+//        }
+    //  }
+  } //end pushyButton
 }
 </script>
 
