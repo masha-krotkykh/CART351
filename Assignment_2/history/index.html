@@ -1,0 +1,375 @@
+<!-- ASSIGNMENT 2 BY MASHA KROTKYKH & ALESSIA SIGNORINO -->
+<!-- References: Sabine Rosenberg's examples and https://developer.mozilla.org/en-US/docs/Web/API/ -->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Assignment_2</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    background: white;
+  }
+</style>
+<script>
+// Defining that everything has to start happening after the window is loaded
+  window.onload = function(){
+    let canvas = document.getElementById("testCanvas");
+    let context = canvas.getContext("2d");
+// Making canvas fullscreen
+    context.canvas.width  = window.innerWidth;
+    context.canvas.height = window.innerHeight;
+// Empty array of shapes to be filled in later
+    let shapeList = [];
+    const NUM_SHAPES = 80;
+    
+// Empty array of buttons  
+	let myButtons = [];
+	const MAX_BUTTONS =3;
+
+// Checking clicked object and adding EvenetListeners
+    canvas.addEventListener("mousedown", function(event){
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTest(event);
+        }
+        
+        for (let i =0; i< myButtons.length;i++){
+     		myButtons[i].hitTestDown(event);
+   		}
+    });
+
+    canvas.addEventListener("mousemove", function(event){
+        //Collision detection function
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTestOver(event);
+        }
+    });
+
+// When cursor is outside canvas, rotation stops    
+    canvas.onmouseout = function() {
+        console.log("Ooopsey");
+        zoneOut = true;
+    };
+
+// On 1-2-3  key pressed shapes change    
+    document.onkeypress = function() {
+        shapeshift()
+    };
+    
+// Adding basic parameters for shapes (colour, speed, quantity, position)
+    for(let i=0; i<NUM_SHAPES; i++){
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let a = .9;
+      let rSpeed = 2;
+// Making sizes relative to the window size      
+      let size = Math.floor((Math.random()*canvas.width/10)+10);
+      let x = Math.floor((Math.random()*canvas.width));
+      let y = Math.floor((Math.random()*canvas.height));
+      
+      var zoneOut = false;
+      var cross = true;
+      var circle = false;
+      var square = false;
+// And constructing the shapes
+      shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i));   
+    }
+    
+    
+    //fill buttons array with button objects
+	for (let i =0; i< MAX_BUTTONS;i++){
+		let objW = canvas.width/40;
+		let offset =10;
+		let color = "#808096";
+		myButtons.push(new myPushyButton(objW, objW + ((objW+offset)*i),objW/2,i,color));
+	}
+
+    requestAnimationFrame(run);
+// Animating the shapes
+    function run(){
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		for(let i=0; i<NUM_SHAPES; i++){
+        	shapeList[i].display();
+      	}
+      
+      	//initial display of buttons
+		for(let i=0; i< myButtons.length;i++){
+			myButtons[i].render();
+		}
+    	requestAnimationFrame(run);
+    }
+    
+    
+    
+    
+      
+  // Function that defines which shapes will be displayed    
+    function shapeshift(button) {
+    	if(event.keyCode === 49 || button === 0) {
+    		console.log("1 key is pressed");
+    		cross = true;
+    		circle = false;
+    		square = false;
+    	}
+    	else if(event.keyCode === 50 || button === 1) {
+    		console.log("2 key is pressed");
+    		cross = false;
+    		circle = true;
+    		square = false;
+    	}
+    	else if(event.keyCode === 51 || button === 2) {
+    		console.log("3 key is pressed");
+    		cross = false;
+    		circle = false;
+    		square = true;
+    	}
+    }
+    
+    
+    
+
+// CONSTRUCTOR FUNCTION
+    function CustomShape(x,y,size,size,r,g,b,a,eid,rSpeed){
+// position, size, colour, opacity, cut-out sizes, event booleans, colour change values    
+        this.x = x;
+        this.y = y;
+		this.size = size;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+        this.innerH = this.size/2;
+        this.innerW = this.size/2;
+        
+        this.eID = eid;
+        this.isOver = false;
+        this.isPressed = false;
+        this.cChange = 10;
+        this.cFade = 1;
+// initial rotation is set to zero, max rotation speed is limited to 0.5
+        this.theta = 0;
+        this.rSpeed = 0;
+        this.maxrSpeed = .5;
+        
+// DISPLAY FUNCTION 
+// random colour change on mouse press
+        this.display = function(){
+          if(this.isPressed === true) {
+
+          	if(this.r <= 0) {
+          		this.r +=this.cChange;
+          	}
+          	else if(this.r >= 250) {
+          		this.r -=this.cChange;
+          	}
+          	else if(this.r > 0 && this.r < 250) {
+          		this.r -= Math.floor((Math.random()*6)-3);
+          	}
+
+          	if(this.g <= 0) {
+          		this.g +=this.cChange;
+          	}
+          	else if(this.g >= 250) {
+          		this.g -=this.cChange;
+          	}
+          	else if(this.g > 0 && this.g < 250) {
+          		this.g -= Math.floor((Math.random()*6)-3);
+          	}
+
+          	if(this.b <= 0) {
+          		this.b +=this.cChange;
+          	}
+          	else if(this.b >= 250) {
+          		this.b -=this.cChange;
+          	}
+          	else if(this.b > 0 && this.b < 250) {
+          		this.b -= Math.floor((Math.random()*6)-3);
+          	}
+
+          }
+
+          else if(this.isPressed ===false) {
+          	if(this.r > 0) {
+          		this.r -= this.cFade;
+          	}
+          	if(this.g > 0) {
+          		this.g -= this.cFade;
+          	}
+          	if(this.b > 0) {
+          		this.b -= this.cFade;
+          	}
+          }
+
+		  this.col = "rgba("+(250-this.r)+","+(250-this.g)+","+(250-this.b)+","+this.a+")";
+          context.fillStyle = this.col;
+          this.stroke = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+          context.strokeStyle = this.stroke;
+
+// ROTATING
+
+          context.save();
+          context.translate(this.x, this.y);
+          context.rotate(this.theta);
+
+          if(zoneOut === false && this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
+          	if(this.rSpeed < .1) {
+          		this.rSpeed = .1;
+          	}
+          	else {
+          		this.rSpeed += 0.001;
+          	}
+          }
+
+          else if((this.isOver ===false || zoneOut === true)&& this.rSpeed > 0){
+        	this.rSpeed-=0.0005;
+          }
+		  this.theta += this.rSpeed;
+          
+// If "1" is pressed, "CROSSES" becomes true (true by default) and crosses are displayed          
+         if(cross === true) {
+          	square = false;
+          	circle = false;
+
+			context.beginPath();
+			context.moveTo(-this.size*3, 0);
+			context.lineTo(this.size*3, 0);	
+			context.lineWidth = this.size/20;
+		  	context.stroke();
+			context.closePath();
+			
+			context.beginPath();
+			context.moveTo(0, -this.size*3);
+			context.lineTo(0, this.size*3);
+			
+			context.lineWidth = this.size/20;
+		  	context.stroke();
+          }
+          
+// If "2" is pressed, "CIRCLES" becomes true (false by default) and circles are displayed          
+          else if(circle === true) {
+          	square = false;
+          	cross = false;
+			context.beginPath();	
+		  	context.arc(this.size/3,this.size/3,this.size/2,0,2*Math.PI);
+		  	context.lineWidth = this.size/20;
+		  	context.stroke();
+		  }
+		  
+// If "3" is pressed, "SQUARES" becomes true (false by default) and squares are displayed
+		  else if(square === true) {	
+		  	cross = false;
+		  	circle = false;
+		  	
+		  	let step = this.size/7;
+          	context.fillRect(-this.size/2-step, -this.size/2-step, this.size+step*2, this.size+step*2);
+// Draw a square spiral inside square shapes (should have done a while loop :/)
+			context.beginPath();
+			context.moveTo(-this.size/2, -this.size/2);
+			context.lineTo(this.size/2, -this.size/2);
+			context.lineTo(this.size/2, this.size/2);
+			context.lineTo(-this.size/2, this.size/2);
+			context.lineTo(-this.size/2, -this.size/2+step);
+			context.lineTo(this.size/2 - step, -this.size/2+step);
+			context.lineTo(this.size/2 - step, this.size/2-step);
+			context.lineTo(-this.size/2 + step, this.size/2-step);
+			context.lineTo(-this.size/2 + step, -this.size/2+step*2);
+			context.lineTo(this.size/2 - step*2, -this.size/2+step*2);
+			context.lineTo(this.size/2 - step*2, this.size/2-step*2);
+			context.lineTo(-this.size/2 + step*2, this.size/2-step*2);
+			context.lineTo(-this.size/2 + step*2, -this.size/2+step*3);
+			context.lineTo(this.size/2 - step*3, -this.size/2+step*3);
+			context.lineTo(this.size/2 - step*3, this.size/2-step*3);
+			context.lineTo(-this.size/2 + step*3, this.size/2-step*3);
+			context.lineTo(-this.size/2 + step*3, -this.size/2+step*4);
+
+			context.lineWidth = this.size/40;
+		  	context.stroke();
+          }
+   
+          context.restore();
+        }
+
+// Checking for collisions for the collision event to kick in (colour change)
+    this.hitTest = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size/2){
+        this.isPressed = !this.isPressed;
+      }
+    }
+// Checking if an object or its area are being hovered over. If so, mouseover event occurs (rotation and acceleration) 
+// and zoneOut (mouseout window that stops the rotation) turns false
+    this.hitTestOver = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){
+        this.isOver = true;
+        zoneOut = false;
+      }
+
+      else{
+        this.isOver = false;
+      }
+    }
+  }
+    
+// BUTTONS HIT TEST AND FUNCTIONALITY  
+  	function myPushyButton(x,y,r,tempId,color){
+  //member variables
+  	this.xPos = x;
+  	this.yPos = y;
+  	this.radius = r;
+  // new for updating
+  	this.ellipseID = tempId;
+  	this.isPressed =false;
+  	this.color = color;
+
+// member function (drawing buttons)
+ 	 this.render =function(){
+      	context.fillStyle = this.color;
+     	context.beginPath();
+     	context.arc(this.xPos,this.yPos,this.radius,0, Math.PI * 2, true);
+		context.fill(); 
+     	context.closePath(); 
+    }
+
+
+// Hit test down, collision detection. Shapeshift on pressing the buttons
+    this.hitTestDown =function(){
+    	if(Math.sqrt(Math.pow((event.clientX-this.xPos),2) + Math.pow((event.clientY - this.yPos),2))< this.radius){
+    	// When the button is pressed, it changes colour
+    		this.color = "#505050";
+         	
+         	if(this.ellipseID === 0){
+         		cross = true;
+    			circle = false;
+    			square = false;
+         	}
+         	else if(this.ellipseID === 1){
+         		cross = false;
+    			circle = true;
+    			square = false;
+         	}
+         	else if(this.ellipseID === 2){
+         		cross = false;
+    			circle = false;
+    			square = true;
+         	}
+         	
+       	}
+       	// When another button is pressed, all previously pressed buttons change their colours back to initial state
+       	else{
+       		this.color = color;	
+       	}
+     }
+  } //end pushyButton            
+}
+</script>
+
+</head>
+<body>
+  <canvas id="testCanvas"></canvas>
+</body>
+</html>
