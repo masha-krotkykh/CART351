@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DAILY ACTIVITY LOG</title>
+    <script src = "jquery/jquery-3.3.1.min.js"></script>
+    <script>
+     $(document).ready(function(){
+       let header = $('header');
+       let section = $('section');
+       let loaded=false;
+       let day;
+       $("#getData").click(function(event){
+         day = document.getElementById("myDay").value;
+         $(header).empty();
+         $(section).empty();
+         loaded=false;
+
+         if(loaded ===false){
+            console.log("get_clicked");
+            // load data from JSON, set boolean to true and run populateHeader() and showLog() to display data on the HTML page
+            $.getJSON('activities.json',function(data) {
+              loaded=true;
+              populateHeader(data);
+              showLog(data);
+            })
+            //fail
+            .fail(function() {
+              console.log( "error" );
+            });
+          }
+          else{
+            console.log("data was loaded");
+            console.log(day);
+          }
+       }); // click function
+
+       let logEntry = $('<article>');
+       let paraH2 =$("<h2>");
+       let para1 = $("<p>");
+       let para2 = $("<p>");
+       let para3 = $("<p>");
+       let para4 = $("<p>");
+       let para5 = $("<p>");
+       let para6 = $("<p>");
+
+       function populateHeader(data){
+         let sampleHeader = $("<h1>");
+         $(sampleHeader).text(data.Label);
+         $(sampleHeader).appendTo(header);
+
+         let para = $("<p>");
+         $(para).text(data.SubLabel);
+         $(para).appendTo(header);
+       }
+
+       function showLog(data){
+      // our array of each log entry objects
+          let days = data['DailyLog'];
+          let current = day - 1;
+
+          $(paraH2).text(days[current].Day);
+          $(para1).text(days[current].Destination);
+          $(para2).text(days[current].Bus);
+          $(para3).text(days[current].Metro);
+          $(para4).text(days[current].Departure);
+          $(para5).text(days[current].Arrival);
+          $(para6).text(days[current].TravelTime);
+
+          $(paraH2).appendTo(logEntry);
+          $(para1).appendTo(logEntry);
+          $(para2).appendTo(logEntry);
+          $(para3).appendTo(logEntry);
+          $(para4).appendTo(logEntry);
+          $(para5).appendTo(logEntry);
+          $(para6).appendTo(logEntry);
+
+          $(section).append(logEntry);
+    }//function
+   }); // ready function
+
+    </script>
+  </head>
+  <body>
+    <div class = "searchCrit">
+      <p>Pick a day to display:</p>
+      <input type="number" min="1" max="4" id="myDay" value="Day" />
+      <input type="button" value="Show" id="getData" />
+    </div>
+      <header>
+      </header>
+      <section>
+      </section>
+  </body>
+</html>
