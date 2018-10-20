@@ -1,46 +1,46 @@
 {
-  "Label":"Commuting with STM",
+  "Label":"Travel Log for the Chosen Date",
   "SubLabel":"The Horror of Public Transit",
   "DailyLog":
   [
     {"id": "mon",
     "Day": "Monday",
-    "Destination": "Concordia",
-    "Bus": "211-E",
-    "Metro": "Green Line",
-    "Departure": "12:30",
-    "Arrival": "13:10",
-    "TravelTime": "40min."
+    "Destination": "Destination: Concordia",
+    "Bus": "Bus Route: 211-E",
+    "Metro": "Metro: Green Line",
+    "Departure": "Departure Time: 12:30",
+    "Arrival": "Arrival Time: 13:10",
+    "TravelTime": "Total Travel Time: 40min."
   },
 
     {"id": "tue",
     "Day": "Tuesday",
-    "Destination": "Concordia",
-    "Bus": "485-E",
-    "Metro": "Green Line",
-    "Departure": "07:40",
-    "Arrival": "08:45",
-    "TravelTime": "1h. 05min."
+    "Destination": "Destination: Concordia",
+    "Bus": "Bus Route: 485-E",
+    "Metro": "Metro: Green Line",
+    "Departure": "Departure Time: 07:40",
+    "Arrival": "Arrival Time: 08:45",
+    "TravelTime": "Total Travel Time: 1h. 05min."
   },
 
     {"id": "wed",
     "Day": "Wednesday",
-    "Destination": "Concordia",
-    "Bus": "411-E",
-    "Metro": "Green Line",
-    "Departure": "07:20",
-    "Arrival": "08:15",
-    "TravelTime": "55 min."
+    "Destination": "Destination: Concordia",
+    "Bus": "Bus Route: 411-E",
+    "Metro": "Metro: Green Line",
+    "Departure": "Departure Time: 07:20",
+    "Arrival": "Arrival Time: 08:15",
+    "TravelTime": "Total Travel Time: 55 min."
   },
 
     {"id": "thu",
     "Day": "Thursday",
-    "Destination": "Work",
-    "Bus": "460-E",
-    "Metro": "None",
-    "Departure": "07:55",
-    "Arrival": "09:05",
-    "TravelTime": "1h. 10min."
+    "Destination": "Destination: Work",
+    "Bus": "Bus Route: 460-E",
+    "Metro": "Metro: None",
+    "Departure": "Departure Time: 07:55",
+    "Arrival": "Arrival Time: 09:05",
+    "TravelTime": "Total Travel Time: 1h. 10min."
   }
 
    ]
