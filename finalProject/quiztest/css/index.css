@@ -1,0 +1,16 @@
+body{
+    background-color: #808080;
+}
+.questionForm{
+    width:800px;
+    margin:0 auto;
+    background-color: #959595;
+    padding: 20px ;
+    height: 360px ;
+    font-size: 1em;
+}
+.question{
+    font-size : 2em;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
