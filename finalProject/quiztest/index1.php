@@ -55,6 +55,7 @@
 
     $currentPara = array($avgLogic, $avgAbstract, $avgTotal);
 
+
     $myJSONObj = json_encode($currentPara);
     echo $myJSONObj;
     exit;
@@ -259,23 +260,25 @@
    //        });
    //      });
 
+
+
         // validate and process form here
- function displayResponse(theResult){
+ function displayResponse(currentPara){
    // theResult is AN ARRAY of objects ...
-   for(let i=0; i< theResult.length; i++)
-   {
-   // get the next object
-   let currentObject = theResult[i];
+   // for(let i=0; i< theResult.length; i++)
+   // {
+   // // get the next object
+   // let currentObject = theResult[i];
    let container = $('<div>').addClass("outer");
    let contentContainer = $('<div>').addClass("content");
-   // go through each property in the current object ....
-   for (let property in currentObject) {
-       let para = $('<p>');
-       $(para).text(property+"::" +currentObject[property]);
-         $(para).appendTo(contentContainer);
-     }
-
-   }
+   // // go through each property in the current object ....
+   // for (let property in currentObject) {
+   //     let para = $('<p>');
+   //     $(para).text(property+"::" +currentObject[property]);
+   //       $(para).appendTo(contentContainer);
+   //   }
+   //
+   // }
    $(contentContainer).appendTo(container);
    $(container).appendTo("#result");
  }
