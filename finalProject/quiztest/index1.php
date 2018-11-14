@@ -18,10 +18,31 @@
   //check if there has been something posted to the server to be processed
   if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
+
     // need to process
-    $logic = $_POST['a_logic'];
-    $abstract = $_POST['a_abstract'];
-    $total = $_POST['a_total'];
+    $logic = $_POST['logicCount'];
+    $abstract = $_POST['abstractCount'];
+    $total = $_POST['correctCount'];
+
+    $logic_es =$db->escapeString($logic);
+  	$abstract_es = $db->escapeString($abstract);
+  	$total_es=$db->escapeString($total);
+
+    $logic_int = intval($logic_es);
+    $abstract_int = intval($abstract_es);
+    $total_int = intval($total_es);
+
+    $queryInsert ="INSERT INTO quizResults(logic, abstract, total)VALUES ('$logic_int', '$abstract_int','$total_int')";
+    // again we do error checking when we try to execute our SQL statement on the db
+  	$ok1 = $db->exec($queryInsert);
+    // NOTE:: error messages WILL be sent back to JQUERY success function .....
+  	if (!$ok1) {
+      die("Cannot execute statement.");
+      exit;
+      }
+      //send back success...
+      echo "success";
+      exit;
   }//POST
 ?>
 
@@ -68,6 +89,7 @@
 
     <script>
       // json array sequence variable
+   //$(document).ready (function(){
       var i = 0;
       var logicCount = 0 ;
       var abstractCount = 0;
@@ -85,6 +107,7 @@
       }
 
       function checkAnswer() {
+
         if (document.getElementById("opt1").checked && jsonData[i].opt1 == jsonData[i].answer) {
           if (jsonData[i].type == "logic"){
             logicCount++;
@@ -133,6 +156,7 @@
         // increment i for next question
         i++;
         if(jsonData.length-1 < i){
+
           // document.write("<body>");
           // document.write("<div>Your logic score is : "+logicCount+"</div>");
           // document.write("<div>Your abstract score is : "+abstractCount+"</div>");
@@ -146,19 +170,23 @@
           console.log(abstractCount);
           console.log(correctCount);
         }
+        else{
         // callback to generate
         generate(i);
       }
-    </script>
+    }
 
-    <script>
-    $(document).ready (function(){
+
       $("#insertResults").submit(function(event) {
         //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
         event.preventDefault();
         console.log("button clicked");
-        let form = $('#insertResults')[0];
-        let data = new FormData(form);
+        //let form = $('#insertResults')[0];
+        let data = new FormData();
+        data.append('logicCount', logicCount);
+        data.append('abstractCount', abstractCount);
+        data.append('correctCount', correctCount);
+
 
         $.ajax({
             type: "POST",
@@ -170,14 +198,14 @@
             cache: false,
             timeout: 600000,
             success: function (response) {
-              console.log("Yoohoo!");
+              console.log("Yoohoo!"+response);
             },
            error:function(){
              console.log("error occurred");
            }
          });
-       });
-     });
+      // });
+    });
      </script>
     </body>
     </html>
