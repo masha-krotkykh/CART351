@@ -53,8 +53,31 @@
     $avgAbstract = $db->query($sql_abstractAv);
     if (!$avgTotal || !$avgLogic || !$avgAbstract) die("Cannot execute query.");
 
-    $currentPara = array($avgLogic, $avgAbstract, $avgTotal);
-
+    while($row = $avgTotal->fetchArray(SQLITE3_ASSOC))
+    {
+      foreach ($row as $key=>$entry)
+      {
+        $finalTotalVal = (int)($entry*10);
+        echo $finalTotalVal;
+      }
+    }
+    while($row = $avgLogic->fetchArray(SQLITE3_ASSOC))
+    {
+      foreach ($row as $key=>$entry)
+      {
+        $finalLogicVal = (int)($entry*10);
+        echo $finalLogicVal;
+      }
+    }
+    while($row = $avgAbstract->fetchArray(SQLITE3_ASSOC))
+    {
+      foreach ($row as $key=>$entry)
+      {
+        $finalAbstractVal = (int)($entry*10);
+        echo $finalAbstractVal;
+      }
+    }
+    $currentPara = array($finalLogicVal, $finalAbstractVal, $finalTotalVal);
 
     $myJSONObj = json_encode($currentPara);
     echo $myJSONObj;
@@ -221,9 +244,9 @@
               console.log("Yoohoo!"+response);
 
             // Parse average values of coulumns
-            let parsedJSON = JSON.parse(response);
-            console.log(parsedJSON);
-            displayResponse(parsedJSON);
+            //let parsedJSON = JSON.parse(response);
+          //  console.log(parsedJSON);
+            //displayResponse(parsedJSON);
             },
            error:function(){
              console.log("error occurred");
