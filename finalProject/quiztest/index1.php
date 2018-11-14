@@ -41,7 +41,7 @@
       exit;
       }
     //send back success...
-    echo "success";
+    // echo "success";
     // exit;
 
     // Getting an average value of the coulumn
@@ -58,7 +58,7 @@
       foreach ($row as $key=>$entry)
       {
         $finalTotalVal = (int)($entry*10);
-        echo $finalTotalVal;
+        // echo $finalTotalVal;
       }
     }
     while($row = $avgLogic->fetchArray(SQLITE3_ASSOC))
@@ -66,7 +66,7 @@
       foreach ($row as $key=>$entry)
       {
         $finalLogicVal = (int)($entry*10);
-        echo $finalLogicVal;
+        // echo $finalLogicVal;
       }
     }
     while($row = $avgAbstract->fetchArray(SQLITE3_ASSOC))
@@ -74,7 +74,7 @@
       foreach ($row as $key=>$entry)
       {
         $finalAbstractVal = (int)($entry*10);
-        echo $finalAbstractVal;
+        // echo $finalAbstractVal;
       }
     }
     $currentPara = array($finalLogicVal, $finalAbstractVal, $finalTotalVal);
@@ -201,12 +201,6 @@
         // increment i for next question
         i++;
         if(jsonData.length-1 < i){
-
-          // document.write("<body>");
-          // document.write("<div>Your logic score is : "+logicCount+"</div>");
-          // document.write("<div>Your abstract score is : "+abstractCount+"</div>");
-          // document.write("<div>Your total score is : "+correctCount+"</div>");
-          // document.write("</body>");
           document.getElementById('buttonS').disabled = false;
           document.getElementById("logic").innerHTML = "Logic: "+logicCount;
           document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
@@ -244,9 +238,9 @@
               console.log("Yoohoo!"+response);
 
             // Parse average values of coulumns
-            //let parsedJSON = JSON.parse(response);
-          //  console.log(parsedJSON);
-            //displayResponse(parsedJSON);
+            let parsedJSON = JSON.parse(response);
+            console.log(parsedJSON);
+            displayResponse(parsedJSON);
             },
            error:function(){
              console.log("error occurred");
@@ -255,56 +249,26 @@
       // });
     });
 
-   //  $("#getResults").submit(function(event) {
-   // //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
-   //    event.preventDefault();
-   //     console.log("trying to view");
-   //     let form = $('#getResults')[0];
-   //     let data = new FormData(form);
-   //     $.ajax({
-   //            type: "POST",
-   //            enctype: 'text/plain',
-   //            url: "index1.php",
-   //            data: data,
-   //            processData: false,//prevents from converting into a query string
-   //            contentType: false,
-   //            cache: false,
-   //            timeout: 600000,
-   //            success: function (response) {
-   //              console.log(response);
-   //              //use the JSON .parse function to convert the JSON string into a Javascript object
-   //              let parsedJSON = JSON.parse(response);
-   //              console.log(parsedJSON);
-   //              displayResponse(parsedJSON);
-   //            },
-   //            error:function(){
-   //              console.log("error occurred");
-   //            }
-   //        });
-   //      });
-
-
-
         // validate and process form here
- function displayResponse(currentPara){
-   // theResult is AN ARRAY of objects ...
-   // for(let i=0; i< theResult.length; i++)
-   // {
-   // // get the next object
-   // let currentObject = theResult[i];
-   let container = $('<div>').addClass("outer");
-   let contentContainer = $('<div>').addClass("content");
-   // // go through each property in the current object ....
-   // for (let property in currentObject) {
-   //     let para = $('<p>');
-   //     $(para).text(property+"::" +currentObject[property]);
-   //       $(para).appendTo(contentContainer);
-   //   }
-   //
-   // }
-   $(contentContainer).appendTo(container);
-   $(container).appendTo("#result");
- }
+ // function displayResponse(theResult){
+ //   // theResult is AN ARRAY of objects ...
+ //   for(let i=0; i< theResult.length; i++)
+ //   {
+ //   // get the next object
+ //   let currentObject = theResult[i];
+ //   let container = $('<div>').addClass("outer");
+ //   let contentContainer = $('<div>').addClass("content");
+ //   // go through each property in the current object ....
+ //   for (let property in currentObject) {
+ //       let para = $('<p>');
+ //       $(para).text(property+"::" +currentObject[property]);
+ //         $(para).appendTo(contentContainer);
+ //     }
+ //   //
+ //   }
+ //   $(contentContainer).appendTo(container);
+ //   $(container).appendTo("#result");
+ // }
 
      </script>
     </body>
