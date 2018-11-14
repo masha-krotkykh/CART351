@@ -98,12 +98,13 @@
         <p class="hide" id = "abstract" name="a_abstract"></p>
         <p class="hide" id = "total" name="a_total"></p>
         <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
+        <h2>CURRENT STATE</h2>
       </form>
-      <form id="getResults" action="">
+      <!-- <form id="getResults" action="">
         <h2>CURRENT STATE</h2>
         <button input type = "submit" name = "view" value = "get results" id =buttonR> view </button>
       </form>
-    </div>
+    </div> -->
     <div id = "result"></div>
     <script src="js/data.js"></script>
 
@@ -196,7 +197,6 @@
       }
     }
 
-
       $("#insertResults").submit(function(event) {
         //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
         event.preventDefault();
@@ -218,6 +218,11 @@
             timeout: 600000,
             success: function (response) {
               console.log("Yoohoo!"+response);
+
+            // Parse average values of coulumns
+            let parsedJSON = JSON.parse(response);
+            console.log(parsedJSON);
+            displayResponse(parsedJSON);
             },
            error:function(){
              console.log("error occurred");
@@ -226,33 +231,33 @@
       // });
     });
 
-    $("#getResults").submit(function(event) {
-   //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
-      event.preventDefault();
-       console.log("trying to view");
-       let form = $('#getResults')[0];
-       let data = new FormData(form);
-       $.ajax({
-              type: "POST",
-              enctype: 'text/plain',
-              url: "index1.php",
-              data: data,
-              processData: false,//prevents from converting into a query string
-              contentType: false,
-              cache: false,
-              timeout: 600000,
-              success: function (response) {
-                console.log(response);
-                //use the JSON .parse function to convert the JSON string into a Javascript object
-                let parsedJSON = JSON.parse(response);
-                console.log(parsedJSON);
-                displayResponse(parsedJSON);
-              },
-              error:function(){
-                console.log("error occurred");
-              }
-          });
-        });
+   //  $("#getResults").submit(function(event) {
+   // //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
+   //    event.preventDefault();
+   //     console.log("trying to view");
+   //     let form = $('#getResults')[0];
+   //     let data = new FormData(form);
+   //     $.ajax({
+   //            type: "POST",
+   //            enctype: 'text/plain',
+   //            url: "index1.php",
+   //            data: data,
+   //            processData: false,//prevents from converting into a query string
+   //            contentType: false,
+   //            cache: false,
+   //            timeout: 600000,
+   //            success: function (response) {
+   //              console.log(response);
+   //              //use the JSON .parse function to convert the JSON string into a Javascript object
+   //              let parsedJSON = JSON.parse(response);
+   //              console.log(parsedJSON);
+   //              displayResponse(parsedJSON);
+   //            },
+   //            error:function(){
+   //              console.log("error occurred");
+   //            }
+   //        });
+   //      });
 
         // validate and process form here
  function displayResponse(theResult){
