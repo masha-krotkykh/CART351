@@ -40,9 +40,24 @@
       die("Cannot execute statement.");
       exit;
       }
-      //send back success...
-      echo "success";
-      exit;
+    //send back success...
+    echo "success";
+    // exit;
+
+    // Getting an average value of the coulumn
+    $sql_totalAv='SELECT AVG(total) FROM quizResults';
+    $sql_logicAv='SELECT AVG(logic) FROM quizResults';
+    $sql_abstractAv='SELECT AVG(abstract) FROM quizResults';
+    $avgTotal = $db->query($sql_totalAv);
+    $avgLogic = $db->query($sql_logicAv);
+    $avgAbstract = $db->query($sql_abstractAv);
+    if (!$avgTotal || !$avgLogic || !$avgAbstract) die("Cannot execute query.");
+
+    $currentPara = array($avgLogic, $avgAbstract, $avgTotal);
+
+    $myJSONObj = json_encode($currentPara);
+    echo $myJSONObj;
+    exit;
   }//POST
 ?>
 
@@ -84,7 +99,12 @@
         <p class="hide" id = "total" name="a_total"></p>
         <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
       </form>
+      <form id="getResults" action="">
+        <h2>CURRENT STATE</h2>
+        <button input type = "submit" name = "view" value = "get results" id =buttonR> view </button>
+      </form>
     </div>
+    <div id = "result"></div>
     <script src="js/data.js"></script>
 
     <script>
@@ -187,7 +207,6 @@
         data.append('abstractCount', abstractCount);
         data.append('correctCount', correctCount);
 
-
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -206,6 +225,56 @@
          });
       // });
     });
+
+    $("#getResults").submit(function(event) {
+   //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
+      event.preventDefault();
+       console.log("trying to view");
+       let form = $('#getResults')[0];
+       let data = new FormData(form);
+       $.ajax({
+              type: "POST",
+              enctype: 'text/plain',
+              url: "index1.php",
+              data: data,
+              processData: false,//prevents from converting into a query string
+              contentType: false,
+              cache: false,
+              timeout: 600000,
+              success: function (response) {
+                console.log(response);
+                //use the JSON .parse function to convert the JSON string into a Javascript object
+                let parsedJSON = JSON.parse(response);
+                console.log(parsedJSON);
+                displayResponse(parsedJSON);
+              },
+              error:function(){
+                console.log("error occurred");
+              }
+          });
+        });
+
+        // validate and process form here
+ function displayResponse(theResult){
+   // theResult is AN ARRAY of objects ...
+   for(let i=0; i< theResult.length; i++)
+   {
+   // get the next object
+   let currentObject = theResult[i];
+   let container = $('<div>').addClass("outer");
+   let contentContainer = $('<div>').addClass("content");
+   // go through each property in the current object ....
+   for (let property in currentObject) {
+       let para = $('<p>');
+       $(para).text(property+"::" +currentObject[property]);
+         $(para).appendTo(contentContainer);
+     }
+
+   }
+   $(contentContainer).appendTo(container);
+   $(container).appendTo("#result");
+ }
+
      </script>
     </body>
     </html>
