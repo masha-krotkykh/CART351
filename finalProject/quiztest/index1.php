@@ -1,4 +1,6 @@
 <?php
+// First of all we need to check if an SQL database exists
+// if not, create an SQL database
   class MyDB extends SQLite3
   {
     function __construct()
@@ -15,23 +17,25 @@
     die($e);
   }
 
-  //check if there has been something posted to the server to be processed
+  // check if there has been something posted to the server to be processed
   if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-
     // need to process
     $logic = $_POST['logicCount'];
     $abstract = $_POST['abstractCount'];
     $total = $_POST['correctCount'];
 
+    // escapeString for secuirity
     $logic_es =$db->escapeString($logic);
   	$abstract_es = $db->escapeString($abstract);
   	$total_es=$db->escapeString($total);
 
+    // converting the values into integers
     $logic_int = intval($logic_es);
     $abstract_int = intval($abstract_es);
     $total_int = intval($total_es);
 
+    // and inserting these values into the table into corresponding columns
     $queryInsert ="INSERT INTO quizResults(logic, abstract, total)VALUES ('$logic_int', '$abstract_int','$total_int')";
     // again we do error checking when we try to execute our SQL statement on the db
   	$ok1 = $db->exec($queryInsert);
@@ -39,20 +43,20 @@
   	if (!$ok1) {
       die("Cannot execute statement.");
       exit;
-      }
-    //send back success...
-    // echo "success";
-    // exit;
+    }
 
-    // Getting an average value of the coulumn
+    // Getting an average value of every coulumn
     $sql_totalAv='SELECT AVG(total) FROM quizResults';
     $sql_logicAv='SELECT AVG(logic) FROM quizResults';
     $sql_abstractAv='SELECT AVG(abstract) FROM quizResults';
+    // and running a querry
     $avgTotal = $db->query($sql_totalAv);
     $avgLogic = $db->query($sql_logicAv);
     $avgAbstract = $db->query($sql_abstractAv);
+    // kill the querry if at least one of the values in unreacheable
     if (!$avgTotal || !$avgLogic || !$avgAbstract) die("Cannot execute query.");
-
+    // !!! THE RESULT RETURNS AS AN ARRAY EVEN IF IT HAS ONLY ONE VALUE !!!
+    // use while loop to "unpack" values from arrays
     while($row = $avgTotal->fetchArray(SQLITE3_ASSOC))
     {
       foreach ($row as $key=>$entry)
@@ -77,18 +81,15 @@
         // echo $finalAbstractVal;
       }
     }
+    // create an array of average values from the database
     $currentPara = array($finalLogicVal, $finalAbstractVal, $finalTotalVal);
-
     $myJSONObj = json_encode($currentPara);
-
     echo $myJSONObj;
-
-  //  echo '<script> updateValues(); </script>';
-
     exit;
   }//POST
 ?>
 
+<!-- HTML page display -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -99,7 +100,7 @@
   <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8">
   <body>
-    <!-- NEW for the result -->
+    <!-- Section of the questionaire to be populated from data file -->
     <div id = "result"></div>
 
     <div class="questionForm">
@@ -122,6 +123,7 @@
         <div><input type="radio" id="opt5" name="options" onclick="checkAnswer()">
           <span id="optt5"></span>
         </div>
+        <!-- The current session results will be displayed here -->
         <p class="hide" id = "logic" name="a_logic"></p>
         <p class="hide" id = "abstract" name="a_abstract"></p>
         <p class="hide" id = "total" name="a_total"></p>
@@ -129,19 +131,21 @@
         <h2>CURRENT STATE</h2>
       </form>
     </div>
-    <div id = "result" style= "width: 50px; height: 50px; background-color: red"></div>
 
+    <!-- Here the graphics will be displayed with parameters retreived from the database -->
+    <div id = "result" style= "width: 50px; height: 50px; background-color: red"></div>
+    <!-- JavaScript starts here -->
+    <!-- Linking to the question database -->
     <script src="js/data.js"></script>
     <script>
-      // json array sequence variable
-   //$(document).ready (function(){
+      // js array sequence variable
       var i = 0;
       var logicCount = 0 ;
       var abstractCount = 0;
       var correctCount = 0;
       //initialize the first question
       generate(0);
-      // generate from json array data with index
+      // generate from js array data with index
       function generate(index) {
         document.getElementById("question").innerHTML = jsonData[index].q;
         document.getElementById("optt1").innerHTML = jsonData[index].opt1;
@@ -150,9 +154,9 @@
         document.getElementById("optt4").innerHTML = jsonData[index].opt4;
         document.getElementById("optt5").innerHTML = jsonData[index].opt5;
       }
-
+      // Checking what option was selected by the user and compare it with the right checkAnswer
+      // if the answer is corret, increment score of corresponding section by one
       function checkAnswer() {
-
         if (document.getElementById("opt1").checked && jsonData[i].opt1 == jsonData[i].answer) {
           if (jsonData[i].type == "logic"){
             logicCount++;
@@ -200,18 +204,20 @@
         }
         // increment i for next question
         i++;
+        // When six questions are answered, enable the "submit" button and populate the resyult section of HTML page
         if(i >= 6){
           document.getElementById('buttonS').disabled = false;
           document.getElementById("logic").innerHTML = "Logic: "+logicCount;
           document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
           document.getElementById("total").innerHTML = "Total: "+correctCount;
-          // updateValues();
+          // console logging to see if works
           console.log(logicCount);
           console.log(abstractCount);
           console.log(correctCount);
         }
-        else{
-        // callback to generate
+
+        else {
+        // Until then callback to generate question
         generate(i);
       }
     }
@@ -220,12 +226,13 @@
         //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
         event.preventDefault();
         console.log("button clicked");
-        //let form = $('#insertResults')[0];
+        // When the "submit" button is pressed, send the session results to the database to the corresponding columns
         let data = new FormData();
         data.append('logicCount', logicCount);
         data.append('abstractCount', abstractCount);
         data.append('correctCount', correctCount);
 
+        // And then this...
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -247,8 +254,9 @@
              console.log("error occurred");
             }
          });
-      // });
     });
+
+    // Assigning values to JS variables to change the appearance of the graphics.
     function updateValues(globalValues) {
      var globalLogic = globalValues[0];
      var globalAbstract = globalValues[1];
@@ -257,30 +265,6 @@
       console.log(globalAbstract);
       console.log(globalTotal);
     }
-
-
-        // validate and process form here
- // function displayResponse(theResult){
- //   // theResult is AN ARRAY of objects ...
- //   for(let i=0; i< theResult.length; i++)
- //   {
- //   // get the next object
- //   let currentObject = theResult[i];
- //   let container = $('<div>').addClass("outer");
- //   let contentContainer = $('<div>').addClass("content");
- //   // go through each property in the current object ....
- //   for (let property in currentObject) {
- //       let para = $('<p>');
- //       $(para).text(property+"::" +currentObject[property]);
- //         $(para).appendTo(contentContainer);
- //     }
- //   //
- //   }
- //   $(contentContainer).appendTo(container);
- //   $(container).appendTo("#result");
- // }
-
-
      </script>
     </body>
     </html>
