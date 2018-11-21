@@ -103,7 +103,7 @@
     <!-- Section of the questionaire to be populated from data file -->
     <div id = "result"></div>
 
-    <div class="questionForm">
+    <div class="questionForm" id="questionForm">
       <form id="insertResults" action="" enctype="multipart/form-data">
         <h2>FEED THE COLLECTIVE MIND</h2>
         <div class="question" id="question">
@@ -128,9 +128,10 @@
         <p class="hide" id = "abstract" name="a_abstract"></p>
         <p class="hide" id = "total" name="a_total"></p>
         <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
-        <h2>CURRENT STATE</h2>
       </form>
     </div>
+    <button onclick="toggle()" name = "buttonH" id =buttonH> >> </button>
+
 
     <!-- Here the graphics will be displayed with parameters retreived from the database -->
     <div id = "result" style= "width: 50px; height: 50px; background-color: red"></div>
@@ -204,12 +205,13 @@
         }
         // increment i for next question
         i++;
-        // When six questions are answered, enable the "submit" button and populate the resyult section of HTML page
+        // When six questions are answered, enable the "submit" button and populate the result section of HTML page
         if(i >= 6){
           document.getElementById('buttonS').disabled = false;
           document.getElementById("logic").innerHTML = "Logic: "+logicCount;
           document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
           document.getElementById("total").innerHTML = "Total: "+correctCount;
+
           // console logging to see if works
           console.log(logicCount);
           console.log(abstractCount);
@@ -231,6 +233,12 @@
         data.append('logicCount', logicCount);
         data.append('abstractCount', abstractCount);
         data.append('correctCount', correctCount);
+
+        // Change the position of the questionForm div when all questions are answered
+        // Reset the submit button and start populating quesions anew
+        $('#questionForm').animate({'margin-top': '-20%'}, 1000);
+        i = 0;
+        document.getElementById('buttonS').disabled = true;
 
         // And then this...
         $.ajax({
@@ -265,6 +273,18 @@
       console.log(globalAbstract);
       console.log(globalTotal);
     }
+
+
+    function toggle() {
+      var margin = document.getElementById("questionForm");
+      if(margin.style.display === "none") {
+        margin.style.display = "block";
+      }
+      else {
+        margin.style.display = "none";
+      }
+    }
+
      </script>
     </body>
     </html>
