@@ -80,7 +80,11 @@
     $currentPara = array($finalLogicVal, $finalAbstractVal, $finalTotalVal);
 
     $myJSONObj = json_encode($currentPara);
+
     echo $myJSONObj;
+
+  //  echo '<script> updateValues(); </script>';
+
     exit;
   }//POST
 ?>
@@ -124,14 +128,10 @@
         <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
         <h2>CURRENT STATE</h2>
       </form>
-      <!-- <form id="getResults" action="">
-        <h2>CURRENT STATE</h2>
-        <button input type = "submit" name = "view" value = "get results" id =buttonR> view </button>
-      </form>
-    </div> -->
-    <div id = "result"></div>
-    <script src="js/data.js"></script>
+    </div>
+    <div id = "result" style= "width: 50px; height: 50px; background-color: red"></div>
 
+    <script src="js/data.js"></script>
     <script>
       // json array sequence variable
    //$(document).ready (function(){
@@ -200,11 +200,12 @@
         }
         // increment i for next question
         i++;
-        if(jsonData.length-1 < i){
+        if(i >= 6){
           document.getElementById('buttonS').disabled = false;
           document.getElementById("logic").innerHTML = "Logic: "+logicCount;
           document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
           document.getElementById("total").innerHTML = "Total: "+correctCount;
+          // updateValues();
           console.log(logicCount);
           console.log(abstractCount);
           console.log(correctCount);
@@ -237,17 +238,26 @@
             success: function (response) {
               console.log("Yoohoo!"+response);
 
-            // Parse average values of coulumns
-            let parsedJSON = JSON.parse(response);
-            console.log(parsedJSON);
-            displayResponse(parsedJSON);
+              // Parse average values of coulumns
+              let parsedJSON = JSON.parse(response);
+              console.log(parsedJSON);
+              updateValues(parsedJSON);
             },
-           error:function(){
+            error:function(){
              console.log("error occurred");
-           }
+            }
          });
       // });
     });
+    function updateValues(globalValues) {
+     var globalLogic = globalValues[0];
+     var globalAbstract = globalValues[1];
+     var globalTotal = globalValues[2];
+      console.log(globalLogic);
+      console.log(globalAbstract);
+      console.log(globalTotal);
+    }
+
 
         // validate and process form here
  // function displayResponse(theResult){
@@ -269,6 +279,7 @@
  //   $(contentContainer).appendTo(container);
  //   $(container).appendTo("#result");
  // }
+
 
      </script>
     </body>
