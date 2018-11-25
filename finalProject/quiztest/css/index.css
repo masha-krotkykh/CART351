@@ -49,11 +49,15 @@ body{
 #result {
   width: 50vw;
   max-width: 500px;
-  height: 50vw;
-  max-height: 500px;
   margin: 0 auto;
   margin-top: 10%;
-  background-image: url("../img/hero.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
+}
+
+#result img, svg {
+  width: 100%;
+  height: auto;
+}
+
+svg polygon, svg circle {
+  fill: #ffffff !important;
 }
