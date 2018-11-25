@@ -1,3 +1,6 @@
+<!-- CREDITS: -->
+<!--Quiz part is based on Even Stronger JS quiz: https://github.com/iamevenstronger/quiz -->
+
 <?php
 // First of all we need to check if an SQL database exists
 // if not, create an SQL database
@@ -53,7 +56,7 @@
     $avgTotal = $db->query($sql_totalAv);
     $avgLogic = $db->query($sql_logicAv);
     $avgAbstract = $db->query($sql_abstractAv);
-    // kill the querry if at least one of the values in unreacheable
+    // kill the querry if at least one of the values is unreacheable
     if (!$avgTotal || !$avgLogic || !$avgAbstract) die("Cannot execute query.");
     // !!! THE RESULT RETURNS AS AN ARRAY EVEN IF IT HAS ONLY ONE VALUE !!!
     // use while loop to "unpack" values from arrays
@@ -130,7 +133,7 @@
         <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
       </form>
     </div>
-    <button onclick="toggle()" name = "buttonH" id =buttonH> >> </button>
+    <button onclick="toggle()" name = "buttonH" id ="buttonH">&#187;</button>
 
 
     <!-- Here the graphics will be displayed with parameters retreived from the database -->
@@ -274,14 +277,15 @@
       console.log(globalTotal);
     }
 
-
     function toggle() {
       var margin = document.getElementById("questionForm");
       if(margin.style.display === "none") {
         margin.style.display = "block";
+        document.getElementById("buttonH").style.transform = "rotate(-90deg)";
       }
       else {
         margin.style.display = "none";
+        document.getElementById("buttonH").style.transform = "rotate(90deg)";
       }
     }
 
