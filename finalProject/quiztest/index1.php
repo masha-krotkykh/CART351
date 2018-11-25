@@ -1,5 +1,6 @@
 <!-- CREDITS: -->
 <!--Quiz part is based on Even Stronger JS quiz: https://github.com/iamevenstronger/quiz -->
+<!-- image Designed by GarryKillian from: https://www.freepik.com/free-vector/abstract-polygonal-cyber-sphere_1534720.html -->
 
 <?php
 // First of all we need to check if an SQL database exists
@@ -103,41 +104,43 @@
   <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
   <meta charset="utf-8">
   <body>
-    <!-- Section of the questionaire to be populated from data file -->
+    <!-- Here the graphics will be displayed with parameters retreived from the database -->
     <div id = "result"></div>
 
-    <div class="questionForm" id="questionForm">
-      <form id="insertResults" action="" enctype="multipart/form-data">
-        <h2>FEED THE COLLECTIVE MIND</h2>
-        <div class="question" id="question">
-        </div>
-        <div><input type="radio" id="opt1" name="options" onclick="checkAnswer()">
-          <span id="optt1"></span>
-        </div>
-        <div><input type="radio" id="opt2" name="options" onclick="checkAnswer()">
-          <span id="optt2"></span>
-        </div>
-        <div><input type="radio" id="opt3" name="options" onclick="checkAnswer()">
-          <span id="optt3"></span>
-        </div>
-        <div><input type="radio" id="opt4" name="options" onclick="checkAnswer()">
-          <span id="optt4"></span>
-        </div>
-        <div><input type="radio" id="opt5" name="options" onclick="checkAnswer()">
-          <span id="optt5"></span>
-        </div>
-        <!-- The current session results will be displayed here -->
-        <p class="hide" id = "logic" name="a_logic"></p>
-        <p class="hide" id = "abstract" name="a_abstract"></p>
-        <p class="hide" id = "total" name="a_total"></p>
-        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
-      </form>
-    </div>
+    <!-- Section of the questionaire to be populated from data file -->
+    <div id="quizContainer">
+      <div class="questionForm" id="questionForm">
+        <form id="insertResults" action="" enctype="multipart/form-data">
+          <h2>FEED THE COLLECTIVE MIND</h2>
+          <div class="question" id="question">
+          </div>
+          <div><input type="radio" id="opt1" name="options" onclick="checkAnswer()">
+            <span id="optt1"></span>
+          </div>
+          <div><input type="radio" id="opt2" name="options" onclick="checkAnswer()">
+            <span id="optt2"></span>
+          </div>
+          <div><input type="radio" id="opt3" name="options" onclick="checkAnswer()">
+            <span id="optt3"></span>
+          </div>
+          <div><input type="radio" id="opt4" name="options" onclick="checkAnswer()">
+            <span id="optt4"></span>
+          </div>
+          <div><input type="radio" id="opt5" name="options" onclick="checkAnswer()">
+            <span id="optt5"></span>
+          </div>
+          <!-- The current session results will be displayed here -->
+          <p class="hide" id = "logic" name="a_logic"></p>
+          <p class="hide" id = "abstract" name="a_abstract"></p>
+          <p class="hide" id = "total" name="a_total"></p>
+          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
+        </form>
+      </div> <!-- end of questionForm -->
+    </div> <!-- end of quizContainer-->
     <button onclick="toggle()" name = "buttonH" id ="buttonH">&#187;</button>
 
 
-    <!-- Here the graphics will be displayed with parameters retreived from the database -->
-    <div id = "result" style= "width: 50px; height: 50px; background-color: red"></div>
+
     <!-- JavaScript starts here -->
     <!-- Linking to the question database -->
     <script src="js/data.js"></script>
@@ -239,7 +242,7 @@
 
         // Change the position of the questionForm div when all questions are answered
         // Reset the submit button and start populating quesions anew
-        $('#questionForm').animate({'margin-top': '-20%'}, 1000);
+        // $('#questionForm').animate({'margin-top': '-20%'}, 1000);
         i = 0;
         document.getElementById('buttonS').disabled = true;
 

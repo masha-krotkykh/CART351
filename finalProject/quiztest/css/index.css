@@ -1,14 +1,26 @@
 body{
-    background-color: #808080;
+    background-color: #04042b;
+    position: relative;
+}
+
+#quizContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-top: 10%;
 }
 .questionForm{
-    width:800px;
+    width:60vw;
+    max-width: 800px;
+    min-height: 45vw;
     margin:0 auto;
     display: block;
-    background-color: #959595;
+    background-color: rgba(255,255,255,.8);
     padding: 20px ;
     height: 360px ;
     font-size: 1em;
+    position: relative;
 }
 .question{
     font-size : 2em;
@@ -18,15 +30,30 @@ body{
 
 #buttonH {
   display: block;
-  margin: 0 auto;
-  margin-top: -25px;
+  position: fixed;
+  top: -5px;
+  left: 0;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 10px;
   padding-bottom: 13px;
-  border-radius: 50%;
+  border-radius: 15%;
   transform: rotate(-90deg);
   font-weight: bold;
   text-align: center;
   font-size: 1em;
+  background-color: rgba(255,255,255,.5);
+  outline: 0;
+}
+
+#result {
+  width: 50vw;
+  max-width: 500px;
+  height: 50vw;
+  max-height: 500px;
+  margin: 0 auto;
+  margin-top: 10%;
+  background-image: url("../img/hero.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
