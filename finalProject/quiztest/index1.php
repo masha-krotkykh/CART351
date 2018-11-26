@@ -107,7 +107,7 @@
     <!-- Here the graphics will be displayed with parameters retreived from the database -->
     <!-- <div id = "result"><img class = "svg" src ="img/hero.svg"></div> -->
     <div id = "result">
-      <img class="svg" src="img/hero.svg">
+      <img id = "hero" class="svg" src="img/hero.svg">
     </div>
 
     <!-- Section of the questionaire to be populated from data file -->
@@ -288,10 +288,12 @@
       if(margin.style.display === "none") {
         margin.style.display = "block";
         document.getElementById("buttonH").style.transform = "rotate(-90deg)";
+        document.getElementById("hero").setAttribute("fill", "#333");
       }
       else {
         margin.style.display = "none";
         document.getElementById("buttonH").style.transform = "rotate(90deg)";
+        svg.setAttributeNS(null,"fill","#ffffff");
       }
     }
 

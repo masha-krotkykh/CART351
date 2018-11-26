@@ -58,6 +58,6 @@ body{
   height: auto;
 }
 
-svg polygon, svg circle {
-  fill: #ffffff !important;
+#hero polygon, #hero circle {
+  fill: red !important;
 }
