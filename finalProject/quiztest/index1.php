@@ -28,10 +28,18 @@
     $logic = $_POST['logicCount'];
     $abstract = $_POST['abstractCount'];
     $total = $_POST['correctCount'];
-  //   date_default_timezone_set('America/Toronto');
-  //   $currentTime = date_default_timezone_get();
-  // echo $currentTime;
-
+    date_default_timezone_set('America/Toronto');
+    $currentTime = date("h:i:sa");
+    // echo $currentTime;
+    // $morning;
+    // if(date('H') < 12) {
+    //   $morning = true;
+    // }
+    // else {
+    //   $morning = false;
+    // }
+    // return $morning;
+    // echo($morning);
     // escapeString for secuirity
     $logic_es =$db->escapeString($logic);
   	$abstract_es = $db->escapeString($abstract);
@@ -91,7 +99,8 @@
     // create an array of average values from the database
     $currentPara = array($finalLogicVal, $finalAbstractVal, $finalTotalVal);
     $myJSONObj = json_encode($currentPara);
-    echo $myJSONObj;
+
+   echo $myJSONObj;
     exit;
   }//POST
 ?>
@@ -159,6 +168,7 @@
       var logicCount = 0 ;
       var abstractCount = 0;
       var correctCount = 0;
+      var randomIndex =0;
 
       // changing the colour of all elements of the avatar SVG image
       function changeColor(){
@@ -182,10 +192,15 @@
         }
       }
       //initialize the first question
-      generate(Math.floor(Math.random(0,jsonDataLogic.length)));
+      // var rand = jsonDataLogic[Math.floor(Math.random() * jsonDataLogic.length)];
+      console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
+      randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
+      generate(randomIndex);
       // generate from js array data with index
       function generate(index) {
-        document.getElementById("question").innerHTML = jsonDataLogic[i].q;
+
+      //  console.log("inside:: "+index);
+        document.getElementById("question").innerHTML = jsonDataLogic[index].q;
         document.getElementById("optt1").innerHTML = jsonDataLogic[index].opt1;
         document.getElementById("optt2").innerHTML = jsonDataLogic[index].opt2;
         document.getElementById("optt3").innerHTML = jsonDataLogic[index].opt3;
@@ -195,23 +210,23 @@
       // Checking what option was selected by the user and compare it with the right checkAnswer
       // if the answer is corret, increment score of corresponding section by one
       function checkAnswer() {
-        if (document.getElementById("opt1").checked && jsonDataLogic[i].opt1 == jsonDataLogic[i].answer) {
+        if (document.getElementById("opt1").checked && jsonDataLogic[randomIndex].opt1 == jsonDataLogic[randomIndex].answer) {
           logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt2").checked && jsonDataLogic[i].opt2 == jsonDataLogic[i].answer) {
+        if (document.getElementById("opt2").checked && jsonDataLogic[randomIndex].opt2 == jsonDataLogic[randomIndex].answer) {
           logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt3").checked && jsonDataLogic[i].opt3 == jsonDataLogic[i].answer) {
+        if (document.getElementById("opt3").checked && jsonDataLogic[randomIndex].opt3 == jsonDataLogic[randomIndex].answer) {
           logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt4").checked && jsonDataLogic[i].opt4 == jsonDataLogic[i].answer) {
+        if (document.getElementById("opt4").checked && jsonDataLogic[randomIndex].opt4 == jsonDataLogic[randomIndex].answer) {
           logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt5").checked && jsonDataLogic[i].opt5 == jsonDataLogic[i].answer) {
+        if (document.getElementById("opt5").checked && jsonDataLogic[randomIndex].opt5 == jsonDataLogic[randomIndex].answer) {
           logicCount++;
           correctCount++;
         }
@@ -233,7 +248,9 @@
         }
         else {
         // Until then callback to generate question
-        generate(i);
+      //  generate(i);
+        randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
+        generate(randomIndex);
 
       }
     }
