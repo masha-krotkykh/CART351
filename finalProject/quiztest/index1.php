@@ -140,11 +140,11 @@
             <p class="hide" id = "abstract" name="a_abstract"></p>
             <p class="hide" id = "total" name="a_total"></p>
           </div>
-          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle()"> submit </button>
+          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(); changeColor()"> submit </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->
-    <button onclick="toggle()" name = "buttonH" id ="buttonH">&#187;</button>
+    <button onclick="toggle(); changeColor()" name = "buttonH" id ="buttonH">&#187;</button>
 
 
 
@@ -157,7 +157,25 @@
       var logicCount = 0 ;
       var abstractCount = 0;
       var correctCount = 0;
-      var color = "rgb(0,0,255)";
+      // colour for the avatar that will change dynamically
+      var color = "rgba(255,0,255,.8)";
+
+
+      // changing the colour of all elements of the avatar SVG image
+      function changeColor(){
+        var heroPolygon = document.querySelectorAll("polygon");
+        var p;
+        for (p = 0; p < heroPolygon.length; p++) {
+          heroPolygon[p].style.fill = color;
+        }
+        var heroCircle = document.querySelectorAll("circle");
+        var c;
+        for (c = 0; c < heroCircle.length; c++) {
+          heroCircle[c].style.fill = color;
+        }
+      }
+
+
       //initialize the first question
       generate(0);
       // generate from js array data with index
@@ -232,18 +250,7 @@
           console.log(abstractCount);
           console.log(correctCount);
           document.getElementById("reply").style.display = "none";
-
-
-          var x = document.querySelectorAll("polygon");
-          var c;
-          for (c = 0; c < x.length; c++) {
-            x[c].style.fill = color;
-          }
-
-
-
         }
-
         else {
         // Until then callback to generate question
         generate(i);
@@ -299,12 +306,6 @@
       console.log(globalLogic);
       console.log(globalAbstract);
       console.log(globalTotal);
-      if(globalLogic > globalAbstract) {
-        document.querySelector("#hero polygon").style.fill = "red";
-      }
-      else {
-        document.querySelector("#hero polygon").style.fill = "green";
-      }
     }
 
     function toggle() {
@@ -313,12 +314,10 @@
         margin.style.display = "block";
         document.getElementById("buttonH").style.transform = "rotate(-90deg)";
         document.getElementById("reply").style.display = "block";
-
       }
       else {
         margin.style.display = "none";
         document.getElementById("buttonH").style.transform = "rotate(90deg)";
-
       }
     }
 
