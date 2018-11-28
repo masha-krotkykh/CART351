@@ -1,8 +1,8 @@
-<!-- CREDITS: -->
-<!--Quiz part is based on Even Stronger JS quiz: https://github.com/iamevenstronger/quiz -->
-<!-- image Designed by GarryKillian from: https://www.freepik.com/free-vector/abstract-polygonal-cyber-sphere_1534720.html -->
-
 <?php
+// CREDITS:
+// Quiz part is based on Even Stronger JS quiz: https://github.com/iamevenstronger/quiz
+// image Designed by GarryKillian from: https://www.freepik.com/free-vector/abstract-polygonal-cyber-sphere_1534720.html
+
 // First of all we need to check if an SQL database exists
 // if not, create an SQL database
   class MyDB extends SQLite3
@@ -28,6 +28,9 @@
     $logic = $_POST['logicCount'];
     $abstract = $_POST['abstractCount'];
     $total = $_POST['correctCount'];
+  //   date_default_timezone_set('America/Toronto');
+  //   $currentTime = date_default_timezone_get();
+  // echo $currentTime;
 
     // escapeString for secuirity
     $logic_es =$db->escapeString($logic);
@@ -65,7 +68,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalTotalVal = (int)($entry*10);
+        $finalTotalVal = (int)($entry*100);
         // echo $finalTotalVal;
       }
     }
@@ -73,7 +76,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalLogicVal = (int)($entry*10);
+        $finalLogicVal = (int)($entry*100);
         // echo $finalLogicVal;
       }
     }
@@ -81,7 +84,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalAbstractVal = (int)($entry*10);
+        $finalAbstractVal = (int)($entry*100);
         // echo $finalAbstractVal;
       }
     }
@@ -105,7 +108,6 @@
   <meta charset="utf-8">
   <body>
     <!-- Here the graphics will be displayed with parameters retreived from the database -->
-    <!-- <div id = "result"><img class = "svg" src ="img/hero.svg"></div> -->
     <div id = "result">
       <img id = "hero" class="svg" src="img/hero.svg">
     </div>
@@ -118,19 +120,19 @@
           <div id = "reply">
             <div class="question" id="question">
             </div>
-            <div><input type="radio" id="opt1" name="options" value="off" onclick="checkAnswer()">
+            <div><input type="radio" id="opt1" name="options" onclick="checkAnswer()">
               <span id="optt1"></span>
             </div>
-            <div><input type="radio" id="opt2" name="options" value="off" onclick="checkAnswer()">
+            <div><input type="radio" id="opt2" name="options" onclick="checkAnswer()">
               <span id="optt2"></span>
             </div>
-            <div><input type="radio" id="opt3" name="options" value="off" onclick="checkAnswer()">
+            <div><input type="radio" id="opt3" name="options" onclick="checkAnswer()">
               <span id="optt3"></span>
             </div>
-            <div><input type="radio" id="opt4" name="options" value="off" class="radio" onclick="checkAnswer()">
+            <div><input type="radio" id="opt4" name="options" onclick="checkAnswer()">
               <span id="optt4"></span>
             </div>
-            <div><input type="radio" id="opt5" name="options" unchecked="false" onclick="checkAnswer()">
+            <div><input type="radio" id="opt5" name="options"onclick="checkAnswer()">
               <span id="optt5"></span>
             </div>
         </div>
@@ -140,7 +142,7 @@
             <p class="hide" id = "abstract" name="a_abstract"></p>
             <p class="hide" id = "total" name="a_total"></p>
           </div>
-          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(); changeColor()"> submit </button>
+          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(); changeColor(); zeroOut()"> submit </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->
@@ -157,12 +159,17 @@
       var logicCount = 0 ;
       var abstractCount = 0;
       var correctCount = 0;
-      // colour for the avatar that will change dynamically
-      var color = "rgba(255,0,255,.8)";
-
 
       // changing the colour of all elements of the avatar SVG image
       function changeColor(){
+        // colour for the avatar that will change dynamically
+        var r, g, b, a;
+        r = abstractCount * 85;
+        g = 0;
+        b = logicCount * 85;
+        a = 1;
+        var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
+
         var heroPolygon = document.querySelectorAll("polygon");
         var p;
         for (p = 0; p < heroPolygon.length; p++) {
@@ -174,65 +181,38 @@
           heroCircle[c].style.fill = color;
         }
       }
-
-
       //initialize the first question
-      generate(0);
+      generate(Math.floor(Math.random(0,jsonDataLogic.length)));
       // generate from js array data with index
       function generate(index) {
-        document.getElementById("question").innerHTML = jsonData[index].q;
-        document.getElementById("optt1").innerHTML = jsonData[index].opt1;
-        document.getElementById("optt2").innerHTML = jsonData[index].opt2;
-        document.getElementById("optt3").innerHTML = jsonData[index].opt3;
-        document.getElementById("optt4").innerHTML = jsonData[index].opt4;
-        document.getElementById("optt5").innerHTML = jsonData[index].opt5;
+        document.getElementById("question").innerHTML = jsonDataLogic[i].q;
+        document.getElementById("optt1").innerHTML = jsonDataLogic[index].opt1;
+        document.getElementById("optt2").innerHTML = jsonDataLogic[index].opt2;
+        document.getElementById("optt3").innerHTML = jsonDataLogic[index].opt3;
+        document.getElementById("optt4").innerHTML = jsonDataLogic[index].opt4;
+        document.getElementById("optt5").innerHTML = jsonDataLogic[index].opt5;
       }
       // Checking what option was selected by the user and compare it with the right checkAnswer
       // if the answer is corret, increment score of corresponding section by one
       function checkAnswer() {
-        if (document.getElementById("opt1").checked && jsonData[i].opt1 == jsonData[i].answer) {
-          if (jsonData[i].type == "logic"){
-            logicCount++;
-          }
-          else if (jsonData[i].type == "abstract"){
-            abstractCount++;
-          }
+        if (document.getElementById("opt1").checked && jsonDataLogic[i].opt1 == jsonDataLogic[i].answer) {
+          logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt2").checked && jsonData[i].opt2 == jsonData[i].answer) {
-          if (jsonData[i].type == "logic"){
-            logicCount++;
-          }
-          else if (jsonData[i].type == "abstract"){
-            abstractCount++;
-          }
+        if (document.getElementById("opt2").checked && jsonDataLogic[i].opt2 == jsonDataLogic[i].answer) {
+          logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt3").checked && jsonData[i].opt3 == jsonData[i].answer) {
-          if (jsonData[i].type == "logic"){
-            logicCount++;
-          }
-          else if (jsonData[i].type == "abstract"){
-            abstractCount++;
-          }
+        if (document.getElementById("opt3").checked && jsonDataLogic[i].opt3 == jsonDataLogic[i].answer) {
+          logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt4").checked && jsonData[i].opt4 == jsonData[i].answer) {
-          if (jsonData[i].type == "logic"){
-            logicCount++;
-          }
-          else if (jsonData[i].type == "abstract"){
-            abstractCount++;
-          }
+        if (document.getElementById("opt4").checked && jsonDataLogic[i].opt4 == jsonDataLogic[i].answer) {
+          logicCount++;
           correctCount++;
         }
-        if (document.getElementById("opt5").checked && jsonData[i].opt5 == jsonData[i].answer) {
-          if (jsonData[i].type == "logic"){
-            logicCount++;
-          }
-          else if (jsonData[i].type == "abstract"){
-            abstractCount++;
-          }
+        if (document.getElementById("opt5").checked && jsonDataLogic[i].opt5 == jsonDataLogic[i].answer) {
+          logicCount++;
           correctCount++;
         }
         // increment i for next question
@@ -243,13 +223,13 @@
           document.getElementById("logic").innerHTML = "Logic: "+logicCount;
           document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
           document.getElementById("total").innerHTML = "Total: "+correctCount;
-          document.querySelector("polygon").style.fill = "white";
 
           // console logging to see if works
           console.log(logicCount);
           console.log(abstractCount);
           console.log(correctCount);
           document.getElementById("reply").style.display = "none";
+          document.getElementById("yourScore").style.display = "block";
         }
         else {
         // Until then callback to generate question
@@ -257,7 +237,6 @@
 
       }
     }
-
       $("#insertResults").submit(function(event) {
         //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
         event.preventDefault();
@@ -273,6 +252,7 @@
         // $('#questionForm').animate({'margin-top': '-20%'}, 1000);
         i = 0;
         document.getElementById('buttonS').disabled = true;
+        document.getElementById("yourScore").style.display = "none";
 
         // And then this...
         $.ajax({
@@ -303,9 +283,9 @@
      var globalLogic = globalValues[0];
      var globalAbstract = globalValues[1];
      var globalTotal = globalValues[2];
-      console.log(globalLogic);
-      console.log(globalAbstract);
-      console.log(globalTotal);
+     console.log(globalLogic);
+     console.log(globalAbstract);
+     console.log(globalTotal);
     }
 
     function toggle() {
@@ -319,6 +299,12 @@
         margin.style.display = "none";
         document.getElementById("buttonH").style.transform = "rotate(90deg)";
       }
+    }
+
+    function zeroOut() {
+      correctCount = 0;
+      logicCount = 0;
+      abstractCount = 0;
     }
 
 
