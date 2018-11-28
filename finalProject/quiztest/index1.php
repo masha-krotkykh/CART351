@@ -169,28 +169,31 @@
       var abstractCount = 0;
       var correctCount = 0;
       var randomIndex =0;
+      var r = 255;
+      var g = 255;
+      var b = 255;
+      var a = 1;
 
       // changing the colour of all elements of the avatar SVG image
-      function changeColor(){
-        // colour for the avatar that will change dynamically
-        var r, g, b, a;
-        r = abstractCount * 85;
-        g = 0;
-        b = logicCount * 85;
-        a = 1;
-        var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
-
-        var heroPolygon = document.querySelectorAll("polygon");
-        var p;
-        for (p = 0; p < heroPolygon.length; p++) {
-          heroPolygon[p].style.fill = color;
-        }
-        var heroCircle = document.querySelectorAll("circle");
-        var c;
-        for (c = 0; c < heroCircle.length; c++) {
-          heroCircle[c].style.fill = color;
-        }
-      }
+      // function changeColor(){
+      //   // colour for the avatar that will change dynamically
+      //   r = 0;
+      //   g = 0;
+      //   b = 0;
+      //   a = 1;
+      //   var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
+      //
+      //   var heroPolygon = document.querySelectorAll("polygon");
+      //   var p;
+      //   for (p = 0; p < heroPolygon.length; p++) {
+      //     heroPolygon[p].style.fill = color;
+      //   }
+      //   var heroCircle = document.querySelectorAll("circle");
+      //   var c;
+      //   for (c = 0; c < heroCircle.length; c++) {
+      //     heroCircle[c].style.fill = color;
+      //   }
+      // }
       //initialize the first question
       // var rand = jsonDataLogic[Math.floor(Math.random() * jsonDataLogic.length)];
       console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
@@ -303,6 +306,25 @@
      console.log(globalLogic);
      console.log(globalAbstract);
      console.log(globalTotal);
+
+     r = globalAbstract * 50;
+     g = 0;
+     b = globalLogic * 50;
+     a = 1;
+
+     var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
+
+     var heroPolygon = document.querySelectorAll("polygon");
+     var p;
+     for (p = 0; p < heroPolygon.length; p++) {
+       heroPolygon[p].style.fill = color;
+     }
+     var heroCircle = document.querySelectorAll("circle");
+     var c;
+     for (c = 0; c < heroCircle.length; c++) {
+       heroCircle[c].style.fill = color;
+     }
+     
     }
 
     function toggle() {
