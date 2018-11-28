@@ -115,28 +115,32 @@
       <div class="questionForm" id="questionForm">
         <form id="insertResults" action="" enctype="multipart/form-data">
           <h2>FEED THE COLLECTIVE MIND</h2>
-          <div class="question" id="question">
-          </div>
-          <div><input type="radio" id="opt1" name="options" onclick="checkAnswer()">
-            <span id="optt1"></span>
-          </div>
-          <div><input type="radio" id="opt2" name="options" onclick="checkAnswer()">
-            <span id="optt2"></span>
-          </div>
-          <div><input type="radio" id="opt3" name="options" onclick="checkAnswer()">
-            <span id="optt3"></span>
-          </div>
-          <div><input type="radio" id="opt4" name="options" onclick="checkAnswer()">
-            <span id="optt4"></span>
-          </div>
-          <div><input type="radio" id="opt5" name="options" onclick="checkAnswer()">
-            <span id="optt5"></span>
-          </div>
+          <div id = "reply">
+            <div class="question" id="question">
+            </div>
+            <div><input type="radio" id="opt1" name="options" value="off" onclick="checkAnswer()">
+              <span id="optt1"></span>
+            </div>
+            <div><input type="radio" id="opt2" name="options" value="off" onclick="checkAnswer()">
+              <span id="optt2"></span>
+            </div>
+            <div><input type="radio" id="opt3" name="options" value="off" onclick="checkAnswer()">
+              <span id="optt3"></span>
+            </div>
+            <div><input type="radio" id="opt4" name="options" value="off" class="radio" onclick="checkAnswer()">
+              <span id="optt4"></span>
+            </div>
+            <div><input type="radio" id="opt5" name="options" unchecked="false" onclick="checkAnswer()">
+              <span id="optt5"></span>
+            </div>
+        </div>
           <!-- The current session results will be displayed here -->
-          <p class="hide" id = "logic" name="a_logic"></p>
-          <p class="hide" id = "abstract" name="a_abstract"></p>
-          <p class="hide" id = "total" name="a_total"></p>
-          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled"> submit </button>
+          <div id = "yourScore">
+            <p class="hide" id = "logic" name="a_logic"></p>
+            <p class="hide" id = "abstract" name="a_abstract"></p>
+            <p class="hide" id = "total" name="a_total"></p>
+          </div>
+          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle()"> submit </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->
@@ -225,11 +229,13 @@
           console.log(logicCount);
           console.log(abstractCount);
           console.log(correctCount);
+          document.getElementById("reply").style.display = "none";
         }
 
         else {
         // Until then callback to generate question
         generate(i);
+
       }
     }
 
@@ -281,6 +287,12 @@
       console.log(globalLogic);
       console.log(globalAbstract);
       console.log(globalTotal);
+      if(globalLogic > globalAbstract) {
+        document.getElementById('result').style.backgroundColor = "rgb(255,255,255)";
+      }
+      else {
+        document.getElementById('result').style.backgroundColor = "rgb(0,0,0)";
+      }
     }
 
     function toggle() {
@@ -288,14 +300,16 @@
       if(margin.style.display === "none") {
         margin.style.display = "block";
         document.getElementById("buttonH").style.transform = "rotate(-90deg)";
-        document.getElementById("hero").setAttribute("fill", "#333");
+        document.getElementById("reply").style.display = "block";
+
       }
       else {
         margin.style.display = "none";
         document.getElementById("buttonH").style.transform = "rotate(90deg)";
-        svg.setAttributeNS(null,"fill","#ffffff");
+
       }
     }
+
 
 // Function to enable SVG image dynamic properties change
 // Borrowed from StackOverflow

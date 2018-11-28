@@ -1,6 +1,7 @@
 body{
     background-color: #04042b;
     position: relative;
+    font-family: helvetica;
 }
 
 #quizContainer {
@@ -13,15 +14,18 @@ body{
 .questionForm{
     width:60vw;
     max-width: 800px;
-    min-height: 45vw;
     margin:0 auto;
     display: block;
     background-color: rgba(255,255,255,.8);
     padding: 20px ;
-    height: 360px ;
     font-size: 1em;
     position: relative;
 }
+.questionForm p {
+    line-height: .5em;
+    text-align: right;
+}
+
 .question{
     font-size : 2em;
     font-weight: bold;
@@ -59,5 +63,5 @@ body{
 }
 
 #hero polygon, #hero circle {
-  fill: red !important;
+  fill: cyan;
 }
