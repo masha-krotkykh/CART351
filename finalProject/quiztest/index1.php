@@ -157,6 +157,7 @@
       var logicCount = 0 ;
       var abstractCount = 0;
       var correctCount = 0;
+      var color = "rgb(0,0,255)";
       //initialize the first question
       generate(0);
       // generate from js array data with index
@@ -224,12 +225,23 @@
           document.getElementById("logic").innerHTML = "Logic: "+logicCount;
           document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
           document.getElementById("total").innerHTML = "Total: "+correctCount;
+          document.querySelector("polygon").style.fill = "white";
 
           // console logging to see if works
           console.log(logicCount);
           console.log(abstractCount);
           console.log(correctCount);
           document.getElementById("reply").style.display = "none";
+
+
+          var x = document.querySelectorAll("polygon");
+          var c;
+          for (c = 0; c < x.length; c++) {
+            x[c].style.fill = color;
+          }
+
+
+
         }
 
         else {
@@ -288,10 +300,10 @@
       console.log(globalAbstract);
       console.log(globalTotal);
       if(globalLogic > globalAbstract) {
-        document.getElementById('result').style.backgroundColor = "rgb(255,255,255)";
+        document.querySelector("#hero polygon").style.fill = "red";
       }
       else {
-        document.getElementById('result').style.backgroundColor = "rgb(0,0,0)";
+        document.querySelector("#hero polygon").style.fill = "green";
       }
     }
 
