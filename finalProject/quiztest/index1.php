@@ -307,9 +307,22 @@
      console.log(globalAbstract);
      console.log(globalTotal);
 
-     r = globalAbstract * 50;
-     g = 0;
-     b = globalLogic * 50;
+     if(globalAbstract > globalLogic) {
+       r = 255;
+       g = (globalAbstract - globalLogic) * 10;
+       b = globalLogic;
+     }
+     else if(globalAbstract < globalLogic) {
+       r = globalAbstract;
+       g = (globalLogic - globalAbstract) * 10;
+       b = 255;
+     }
+     else {
+       r = globalAbstract;
+       g = 255;
+       b = globalLogic;
+     }
+
      a = 1;
 
      var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
@@ -324,7 +337,7 @@
      for (c = 0; c < heroCircle.length; c++) {
        heroCircle[c].style.fill = color;
      }
-     
+
     }
 
     function toggle() {
