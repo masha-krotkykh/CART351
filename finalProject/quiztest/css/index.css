@@ -14,11 +14,12 @@ body{
 .questionForm{
     width:60vw;
     max-width: 800px;
+    border-radius: 10px;
     margin:0 auto;
     display: block;
-    background-color: rgba(255,255,255,.8);
+    background-color: rgba(255,255,255,.9);
     padding: 20px ;
-    font-size: 1em;
+    font-size: 1.5em;
     position: relative;
 }
 .questionForm p {
@@ -27,7 +28,7 @@ body{
 }
 
 .question{
-    font-size : 2em;
+    font-size : 1em;
     font-weight: bold;
     margin-bottom: 1em;
 }

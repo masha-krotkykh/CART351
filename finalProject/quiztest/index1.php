@@ -198,10 +198,10 @@
       // var rand = jsonDataLogic[Math.floor(Math.random() * jsonDataLogic.length)];
       console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
       randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
-      generate(randomIndex);
+      generateLogic(randomIndex);
       // generate from js array data with index
-      function generate(index) {
-
+      // first for the logic section
+      function generateLogic(index) {
       //  console.log("inside:: "+index);
         document.getElementById("question").innerHTML = jsonDataLogic[index].q;
         document.getElementById("optt1").innerHTML = jsonDataLogic[index].opt1;
@@ -209,6 +209,15 @@
         document.getElementById("optt3").innerHTML = jsonDataLogic[index].opt3;
         document.getElementById("optt4").innerHTML = jsonDataLogic[index].opt4;
         document.getElementById("optt5").innerHTML = jsonDataLogic[index].opt5;
+      }
+      // then for the abstract section
+      function generateAbstract(index) {
+        document.getElementById("question").innerHTML = jsonDataAbstract[index].q;
+        document.getElementById("optt1").innerHTML = jsonDataAbstract[index].opt1;
+        document.getElementById("optt2").innerHTML = jsonDataAbstract[index].opt2;
+        document.getElementById("optt3").innerHTML = jsonDataAbstract[index].opt3;
+        document.getElementById("optt4").innerHTML = jsonDataAbstract[index].opt4;
+        document.getElementById("optt5").innerHTML = jsonDataAbstract[index].opt5;
       }
       // Checking what option was selected by the user and compare it with the right checkAnswer
       // if the answer is corret, increment score of corresponding section by one
@@ -233,6 +242,28 @@
           logicCount++;
           correctCount++;
         }
+
+
+        if (document.getElementById("opt1").checked && jsonDataAbstract[randomIndex].opt1 == jsonDataAbstract[randomIndex].answer) {
+          abstractCount++;
+          correctCount++;
+        }
+        if (document.getElementById("opt2").checked && jsonDataAbstract[randomIndex].opt2 == jsonDataAbstract[randomIndex].answer) {
+          abstractCount++;
+          correctCount++;
+        }
+        if (document.getElementById("opt3").checked && jsonDataAbstract[randomIndex].opt3 == jsonDataAbstract[randomIndex].answer) {
+          abstractCount++;
+          correctCount++;
+        }
+        if (document.getElementById("opt4").checked && jsonDataAbstract[randomIndex].opt4 == jsonDataAbstract[randomIndex].answer) {
+          abstractCount++;
+          correctCount++;
+        }
+        if (document.getElementById("opt5").checked && jsonDataAbstract[randomIndex].opt5 == jsonDataAbstract[randomIndex].answer) {
+          abstractCount++;
+          correctCount++;
+        }
         // increment i for next question
         i++;
         // When six questions are answered, enable the "submit" button and populate the result section of HTML page
@@ -249,12 +280,15 @@
           document.getElementById("reply").style.display = "none";
           document.getElementById("yourScore").style.display = "block";
         }
+        else if(i >= 3){
+          randomIndex = Math.floor(Math.random() * jsonDataAbstract.length);
+          generateAbstract(randomIndex);
+        }
         else {
         // Until then callback to generate question
       //  generate(i);
         randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
-        generate(randomIndex);
-
+        generateLogic(randomIndex);
       }
     }
       $("#insertResults").submit(function(event) {
@@ -337,7 +371,6 @@
      for (c = 0; c < heroCircle.length; c++) {
        heroCircle[c].style.fill = color;
      }
-
     }
 
     function toggle() {
@@ -351,6 +384,8 @@
         margin.style.display = "none";
         document.getElementById("buttonH").style.transform = "rotate(90deg)";
       }
+      zeroOut();
+      console.log(abstractCount);
     }
 
     function zeroOut() {
