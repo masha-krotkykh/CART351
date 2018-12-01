@@ -28,30 +28,24 @@
     $logic = $_POST['logicCount'];
     $abstract = $_POST['abstractCount'];
     $total = $_POST['correctCount'];
+    $inputTime = $_POST['morning'];
+
     date_default_timezone_set('America/Toronto');
-    $currentTime = date("h:i:sa");
-    // echo $currentTime;
-    // $morning;
-    // if(date('H') < 12) {
-    //   $morning = true;
-    // }
-    // else {
-    //   $morning = false;
-    // }
-    // return $morning;
-    // echo($morning);
+
     // escapeString for secuirity
-    $logic_es =$db->escapeString($logic);
+    $logic_es = $db->escapeString($logic);
   	$abstract_es = $db->escapeString($abstract);
-  	$total_es=$db->escapeString($total);
+  	$total_es = $db->escapeString($total);
+    $inputTime_es = $db->escapeString($inputTime);
 
     // converting the values into integers
     $logic_int = intval($logic_es);
     $abstract_int = intval($abstract_es);
     $total_int = intval($total_es);
+    $inputTime_int = intval($inputTime_es);
 
     // and inserting these values into the table into corresponding columns
-    $queryInsert ="INSERT INTO quizResults(logic, abstract, total)VALUES ('$logic_int', '$abstract_int','$total_int')";
+    $queryInsert ="INSERT INTO quizResults(logic, abstract, total, inputTime)VALUES ('$logic_int', '$abstract_int','$total_int','$inputTime_int')";
     // again we do error checking when we try to execute our SQL statement on the db
   	$ok1 = $db->exec($queryInsert);
     // NOTE:: error messages WILL be sent back to JQUERY success function .....

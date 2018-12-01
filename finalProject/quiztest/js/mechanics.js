@@ -14,6 +14,17 @@ var ag = 0;
 var ab = 0;
 var aa = 1;
 
+var d = new Date();
+var time = d.getHours();
+var morning;
+if(time < 14 && time > 2) {
+  morning = 1;
+}
+else {
+  morning = 0;
+}
+console.log(morning);
+
 //initialize the first question
 // var rand = jsonDataLogic[Math.floor(Math.random() * jsonDataLogic.length)];
 console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
@@ -196,11 +207,7 @@ function changeColor() {
     ar = abstractCount * 85;
     ag = Math.abs((abstractCount - logicCount) * 85);
     ab = logicCount * 85;
-    aa = 1;
-    console.log(aColor);
-    console.log(ar);
-    console.log(ag);
-    console.log(ab);
+    aa = correctCount/6;
 
     var aColor = "rgba("+ ar +","+ ag +", "+ ab +", "+ aa +")";
 
