@@ -156,7 +156,7 @@
             <p class="hide" id = "abstract" name="a_abstract"></p>
             <p class="hide" id = "total" name="a_total"></p>
         </div>
-        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(), zeroOut()"> submit </button>
+        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(); zeroOut()"> submit </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->

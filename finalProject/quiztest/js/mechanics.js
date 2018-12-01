@@ -45,47 +45,52 @@ function checkAnswers() {
   if (document.getElementById("opt1").checked) {
     if(jsonDataLogic[randomIndex].opt1 == jsonDataLogic[randomIndex].answer) {
       logicCount++;
+      correctCount++;
     }
     else if(jsonDataAbstract[randomIndex].opt1 == jsonDataAbstract[randomIndex].answer) {
       abstractCount++;
+      correctCount++;
     }
-    correctCount++;
   }
   if (document.getElementById("opt2").checked) {
     if(jsonDataLogic[randomIndex].opt2 == jsonDataLogic[randomIndex].answer) {
       logicCount++;
+      correctCount++;
     }
     else if(jsonDataAbstract[randomIndex].opt2 == jsonDataAbstract[randomIndex].answer) {
       abstractCount++;
+      correctCount++;
     }
-    correctCount++;
   }
   if (document.getElementById("opt3").checked) {
     if(jsonDataLogic[randomIndex].opt3 == jsonDataLogic[randomIndex].answer) {
       logicCount++;
+      correctCount++;
     }
     else if(jsonDataAbstract[randomIndex].opt3 == jsonDataAbstract[randomIndex].answer) {
       abstractCount++;
+      correctCount++;
     }
-    correctCount++;
   }
   if (document.getElementById("opt4").checked) {
     if(jsonDataLogic[randomIndex].opt4 == jsonDataLogic[randomIndex].answer) {
       logicCount++;
+      correctCount++;
     }
     else if(jsonDataAbstract[randomIndex].opt4 == jsonDataAbstract[randomIndex].answer) {
       abstractCount++;
+      correctCount++;
     }
-    correctCount++;
   }
   if (document.getElementById("opt5").checked) {
     if(jsonDataLogic[randomIndex].opt5 == jsonDataLogic[randomIndex].answer) {
       logicCount++;
+      correctCount++;
     }
     else if(jsonDataAbstract[randomIndex].opt5 == jsonDataAbstract[randomIndex].answer) {
       abstractCount++;
+      correctCount++;
     }
-    correctCount++;
   }
 
   // increment i for next question
@@ -111,6 +116,7 @@ function checkAnswers() {
       console.log(correctCount);
       document.getElementById("reply").style.display = "none";
       document.getElementById("yourScore").style.display = "block";
+      changeColor();
   }
 }
 $("#insertResults").submit(function(event) {
@@ -183,47 +189,51 @@ function updateValues(globalValues) {
   for (c = 0; c < heroCircle.length; c++) {
    heroCircle[c].style.fill = color;
   }
+}
 
-// Define colour for current session avatar
-  ar = abstractCount * 85;
-  ag = Math.abs((abstractCount - logicCount) * 85);
-  ab = logicCount * 85;
-  aa = (abstractCount + logicCount) / 6;
-  console.log(aColor);
+function changeColor() {
+  // Define colour for current session avatar
+    ar = abstractCount * 85;
+    ag = Math.abs((abstractCount - logicCount) * 85);
+    ab = logicCount * 85;
+    aa = 1;
+    console.log(aColor);
+    console.log(ar);
+    console.log(ag);
+    console.log(ab);
 
-  var aColor = "rgba("+ ar +","+ ag +", "+ ab +", "+ aa +")";
+    var aColor = "rgba("+ ar +","+ ag +", "+ ab +", "+ aa +")";
 
-  var avatarPolygon = document.querySelectorAll("#avatar polygon");
-  var ap;
-  for (ap = 0; ap < avatarPolygon.length; ap++) {
-   avatarPolygon[ap].style.fill = aColor;
-  }
-  var avatarCircle = document.querySelectorAll("#avatar circle");
-  var ac;
-  for (ac = 0; ac < avatarCircle.length; ac++) {
-   avatarCircle[ac].style.fill = aColor;
-  }
+    var avatarPolygon = document.querySelectorAll("#avatar polygon");
+    var ap;
+    for (ap = 0; ap < avatarPolygon.length; ap++) {
+     avatarPolygon[ap].style.fill = aColor;
+    }
+    var avatarCircle = document.querySelectorAll("#avatar circle");
+    var ac;
+    for (ac = 0; ac < avatarCircle.length; ac++) {
+     avatarCircle[ac].style.fill = aColor;
+    }
 }
 
 function toggle() {
-var margin = document.getElementById("questionForm");
-if(margin.style.display === "none") {
-  margin.style.display = "block";
-  document.getElementById("buttonH").style.transform = "rotate(-90deg)";
-  document.getElementById("reply").style.display = "block";
-}
-else {
-  margin.style.display = "none";
-  document.getElementById("buttonH").style.transform = "rotate(90deg)";
-}
-zeroOut();
-console.log(abstractCount);
+  var margin = document.getElementById("questionForm");
+  if(margin.style.display === "none") {
+    margin.style.display = "block";
+    document.getElementById("buttonH").style.transform = "rotate(-90deg)";
+    document.getElementById("reply").style.display = "block";
+  }
+  else {
+    margin.style.display = "none";
+    document.getElementById("buttonH").style.transform = "rotate(90deg)";
+  }
+  zeroOut();
 }
 
 function zeroOut() {
-correctCount = 0;
-logicCount = 0;
-abstractCount = 0;
+  correctCount = 0;
+  logicCount = 0;
+  abstractCount = 0;
 }
 
 // Function to enable SVG image dynamic properties change
