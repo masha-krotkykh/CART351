@@ -229,12 +229,12 @@ function toggle() {
     margin.style.display = "block";
     document.getElementById("buttonH").style.transform = "rotate(-90deg)";
     document.getElementById("reply").style.display = "block";
+    zeroOut();
   }
   else {
     margin.style.display = "none";
     document.getElementById("buttonH").style.transform = "rotate(90deg)";
   }
-  zeroOut();
 }
 
 function zeroOut() {

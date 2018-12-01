@@ -150,11 +150,11 @@
             <p class="hide" id = "abstract" name="a_abstract"></p>
             <p class="hide" id = "total" name="a_total"></p>
         </div>
-        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(); zeroOut()"> submit </button>
+        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle()"> submit </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->
-    <button onclick="toggle(); zeroOut()" name = "buttonH" id ="buttonH">&#187;</button>
+    <button onclick="toggle()" name = "buttonH" id ="buttonH">&#187;</button>
 
     <!-- Linking to the question database -->
     <script src="js/data.js"></script>
