@@ -3,7 +3,7 @@ var i = 0;
 var logicCount = 0 ;
 var abstractCount = 0;
 var correctCount = 0;
-var randomIndex =0;
+var randomIndex = 0;
 var r = 255;
 var g = 255;
 var b = 255;
@@ -41,49 +41,53 @@ function generateAbstract(index) {
 }
 // Checking what option was selected by the user and compare it with the right checkAnswer
 // if the answer is corret, increment score of corresponding section by one
-function checkLogic() {
-  if (document.getElementById("opt1").checked && jsonDataLogic[randomIndex].opt1 == jsonDataLogic[randomIndex].answer) {
-    logicCount++;
+function checkAnswers() {
+  if (document.getElementById("opt1").checked) {
+    if(jsonDataLogic[randomIndex].opt1 == jsonDataLogic[randomIndex].answer) {
+      logicCount++;
+    }
+    else if(jsonDataAbstract[randomIndex].opt1 == jsonDataAbstract[randomIndex].answer) {
+      abstractCount++;
+    }
     correctCount++;
   }
-  if (document.getElementById("opt2").checked && jsonDataLogic[randomIndex].opt2 == jsonDataLogic[randomIndex].answer) {
-    logicCount++;
+  if (document.getElementById("opt2").checked) {
+    if(jsonDataLogic[randomIndex].opt2 == jsonDataLogic[randomIndex].answer) {
+      logicCount++;
+    }
+    else if(jsonDataAbstract[randomIndex].opt2 == jsonDataAbstract[randomIndex].answer) {
+      abstractCount++;
+    }
     correctCount++;
   }
-  if (document.getElementById("opt3").checked && jsonDataLogic[randomIndex].opt3 == jsonDataLogic[randomIndex].answer) {
-    logicCount++;
+  if (document.getElementById("opt3").checked) {
+    if(jsonDataLogic[randomIndex].opt3 == jsonDataLogic[randomIndex].answer) {
+      logicCount++;
+    }
+    else if(jsonDataAbstract[randomIndex].opt3 == jsonDataAbstract[randomIndex].answer) {
+      abstractCount++;
+    }
     correctCount++;
   }
-  if (document.getElementById("opt4").checked && jsonDataLogic[randomIndex].opt4 == jsonDataLogic[randomIndex].answer) {
-    logicCount++;
+  if (document.getElementById("opt4").checked) {
+    if(jsonDataLogic[randomIndex].opt4 == jsonDataLogic[randomIndex].answer) {
+      logicCount++;
+    }
+    else if(jsonDataAbstract[randomIndex].opt4 == jsonDataAbstract[randomIndex].answer) {
+      abstractCount++;
+    }
     correctCount++;
   }
-  if (document.getElementById("opt5").checked && jsonDataLogic[randomIndex].opt5 == jsonDataLogic[randomIndex].answer) {
-    logicCount++;
+  if (document.getElementById("opt5").checked) {
+    if(jsonDataLogic[randomIndex].opt5 == jsonDataLogic[randomIndex].answer) {
+      logicCount++;
+    }
+    else if(jsonDataAbstract[randomIndex].opt5 == jsonDataAbstract[randomIndex].answer) {
+      abstractCount++;
+    }
     correctCount++;
   }
-}
-function checkAbstract() {
-  if (document.getElementById("opt1").checked && jsonDataAbstract[randomIndex].opt1 == jsonDataAbstract[randomIndex].answer) {
-    abstractCount++;
-    correctCount++;
-  }
-  if (document.getElementById("opt2").checked && jsonDataAbstract[randomIndex].opt2 == jsonDataAbstract[randomIndex].answer) {
-    abstractCount++;
-    correctCount++;
-  }
-  if (document.getElementById("opt3").checked && jsonDataAbstract[randomIndex].opt3 == jsonDataAbstract[randomIndex].answer) {
-    abstractCount++;
-    correctCount++;
-  }
-  if (document.getElementById("opt4").checked && jsonDataAbstract[randomIndex].opt4 == jsonDataAbstract[randomIndex].answer) {
-    abstractCount++;
-    correctCount++;
-  }
-  if (document.getElementById("opt5").checked && jsonDataAbstract[randomIndex].opt5 == jsonDataAbstract[randomIndex].answer) {
-    abstractCount++;
-    correctCount++;
-  }
+
   // increment i for next question
   i++;
 
@@ -92,8 +96,8 @@ function checkAbstract() {
     generateLogic(randomIndex);
   }
   else if(i >= 3 && i < 6) {
-    randomIndexTwo = Math.floor(Math.random() * jsonDataAbstract.length);
-    generateAbstract(randomIndexTwo);
+    randomIndex = Math.floor(Math.random() * jsonDataAbstract.length);
+    generateAbstract(randomIndex);
   }
   else {
       document.getElementById('buttonS').disabled = false;
@@ -182,9 +186,10 @@ function updateValues(globalValues) {
 
 // Define colour for current session avatar
   ar = abstractCount * 85;
-  ag = Math.abs(abstractCount - logicCount) * 85;
+  ag = Math.abs((abstractCount - logicCount) * 85);
   ab = logicCount * 85;
-  aa = correctCount / 6;
+  aa = (abstractCount + logicCount) / 6;
+  console.log(aColor);
 
   var aColor = "rgba("+ ar +","+ ag +", "+ ab +", "+ aa +")";
 

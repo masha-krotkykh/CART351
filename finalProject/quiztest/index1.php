@@ -134,19 +134,19 @@
           <div id = "reply">
             <div class="question" id="question">
             </div>
-            <div><input type="radio" id="opt1" name="options" onclick="checkLogic(); checkAbstract()">
+            <div><input type="radio" id="opt1" name="options" onclick="checkAnswers()">
               <span id="optt1"></span>
             </div>
-            <div><input type="radio" id="opt2" name="options" onclick="checkLogic(); checkAbstract()">
+            <div><input type="radio" id="opt2" name="options" onclick="checkAnswers()">
               <span id="optt2"></span>
             </div>
-            <div><input type="radio" id="opt3" name="options" onclick="checkLogic(); checkAbstract()">
+            <div><input type="radio" id="opt3" name="options" onclick="checkAnswers()">
               <span id="optt3"></span>
             </div>
-            <div><input type="radio" id="opt4" name="options" onclick="checkLogic(); checkAbstract()">
+            <div><input type="radio" id="opt4" name="options" onclick="checkAnswers()">
               <span id="optt4"></span>
             </div>
-            <div><input type="radio" id="opt5" name="options"onclick="checkLogic(); checkAbstract()">
+            <div><input type="radio" id="opt5" name="options"onclick="checkAnswers()">
               <span id="optt5"></span>
             </div>
           </div>
