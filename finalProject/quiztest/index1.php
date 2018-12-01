@@ -72,11 +72,12 @@
     if (!$avgTotal || !$avgLogic || !$avgAbstract) die("Cannot execute query.");
     // !!! THE RESULT RETURNS AS AN ARRAY EVEN IF IT HAS ONLY ONE VALUE !!!
     // use while loop to "unpack" values from arrays
+    // multiplying the values by 85 to map nicely to RGB values
     while($row = $avgTotal->fetchArray(SQLITE3_ASSOC))
     {
       foreach ($row as $key=>$entry)
       {
-        $finalTotalVal = (int)($entry*100);
+        $finalTotalVal = (int)($entry*85);
         // echo $finalTotalVal;
       }
     }
@@ -84,7 +85,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalLogicVal = (int)($entry*100);
+        $finalLogicVal = (int)($entry*85);
         // echo $finalLogicVal;
       }
     }
@@ -92,7 +93,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalAbstractVal = (int)($entry*100);
+        $finalAbstractVal = (int)($entry*85);
         // echo $finalAbstractVal;
       }
     }
@@ -121,6 +122,10 @@
       <img id = "hero" class="svg" src="img/hero.svg">
     </div>
 
+    <!-- Personal user results of the current session for comparison -->
+    <div id = "avatar">
+      <img id = "avatar" class="svg" src="img/hero.svg">
+    </div>
     <!-- Section of the questionaire to be populated from data file -->
     <div id="quizContainer">
       <div class="questionForm" id="questionForm">
@@ -129,307 +134,37 @@
           <div id = "reply">
             <div class="question" id="question">
             </div>
-            <div><input type="radio" id="opt1" name="options" onclick="checkAnswer()">
+            <div><input type="radio" id="opt1" name="options" onclick="checkLogic(); checkAbstract()">
               <span id="optt1"></span>
             </div>
-            <div><input type="radio" id="opt2" name="options" onclick="checkAnswer()">
+            <div><input type="radio" id="opt2" name="options" onclick="checkLogic(); checkAbstract()">
               <span id="optt2"></span>
             </div>
-            <div><input type="radio" id="opt3" name="options" onclick="checkAnswer()">
+            <div><input type="radio" id="opt3" name="options" onclick="checkLogic(); checkAbstract()">
               <span id="optt3"></span>
             </div>
-            <div><input type="radio" id="opt4" name="options" onclick="checkAnswer()">
+            <div><input type="radio" id="opt4" name="options" onclick="checkLogic(); checkAbstract()">
               <span id="optt4"></span>
             </div>
-            <div><input type="radio" id="opt5" name="options"onclick="checkAnswer()">
+            <div><input type="radio" id="opt5" name="options"onclick="checkLogic(); checkAbstract()">
               <span id="optt5"></span>
             </div>
-        </div>
+          </div>
           <!-- The current session results will be displayed here -->
           <div id = "yourScore">
             <p class="hide" id = "logic" name="a_logic"></p>
             <p class="hide" id = "abstract" name="a_abstract"></p>
             <p class="hide" id = "total" name="a_total"></p>
-          </div>
-          <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(); changeColor(); zeroOut()"> submit </button>
+        </div>
+        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle(), zeroOut()"> submit </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->
-    <button onclick="toggle(); changeColor()" name = "buttonH" id ="buttonH">&#187;</button>
+    <button onclick="toggle(); zeroOut()" name = "buttonH" id ="buttonH">&#187;</button>
 
-
-
-    <!-- JavaScript starts here -->
     <!-- Linking to the question database -->
     <script src="js/data.js"></script>
-    <script>
-      // js array sequence variable
-      var i = 0;
-      var logicCount = 0 ;
-      var abstractCount = 0;
-      var correctCount = 0;
-      var randomIndex =0;
-      var r = 255;
-      var g = 255;
-      var b = 255;
-      var a = 1;
-
-      // changing the colour of all elements of the avatar SVG image
-      // function changeColor(){
-      //   // colour for the avatar that will change dynamically
-      //   r = 0;
-      //   g = 0;
-      //   b = 0;
-      //   a = 1;
-      //   var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
-      //
-      //   var heroPolygon = document.querySelectorAll("polygon");
-      //   var p;
-      //   for (p = 0; p < heroPolygon.length; p++) {
-      //     heroPolygon[p].style.fill = color;
-      //   }
-      //   var heroCircle = document.querySelectorAll("circle");
-      //   var c;
-      //   for (c = 0; c < heroCircle.length; c++) {
-      //     heroCircle[c].style.fill = color;
-      //   }
-      // }
-      //initialize the first question
-      // var rand = jsonDataLogic[Math.floor(Math.random() * jsonDataLogic.length)];
-      console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
-      randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
-      generateLogic(randomIndex);
-      // generate from js array data with index
-      // first for the logic section
-      function generateLogic(index) {
-      //  console.log("inside:: "+index);
-        document.getElementById("question").innerHTML = jsonDataLogic[index].q;
-        document.getElementById("optt1").innerHTML = jsonDataLogic[index].opt1;
-        document.getElementById("optt2").innerHTML = jsonDataLogic[index].opt2;
-        document.getElementById("optt3").innerHTML = jsonDataLogic[index].opt3;
-        document.getElementById("optt4").innerHTML = jsonDataLogic[index].opt4;
-        document.getElementById("optt5").innerHTML = jsonDataLogic[index].opt5;
-      }
-      // then for the abstract section
-      function generateAbstract(index) {
-        document.getElementById("question").innerHTML = jsonDataAbstract[index].q;
-        document.getElementById("optt1").innerHTML = jsonDataAbstract[index].opt1;
-        document.getElementById("optt2").innerHTML = jsonDataAbstract[index].opt2;
-        document.getElementById("optt3").innerHTML = jsonDataAbstract[index].opt3;
-        document.getElementById("optt4").innerHTML = jsonDataAbstract[index].opt4;
-        document.getElementById("optt5").innerHTML = jsonDataAbstract[index].opt5;
-      }
-      // Checking what option was selected by the user and compare it with the right checkAnswer
-      // if the answer is corret, increment score of corresponding section by one
-      function checkAnswer() {
-        if (document.getElementById("opt1").checked && jsonDataLogic[randomIndex].opt1 == jsonDataLogic[randomIndex].answer) {
-          logicCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt2").checked && jsonDataLogic[randomIndex].opt2 == jsonDataLogic[randomIndex].answer) {
-          logicCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt3").checked && jsonDataLogic[randomIndex].opt3 == jsonDataLogic[randomIndex].answer) {
-          logicCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt4").checked && jsonDataLogic[randomIndex].opt4 == jsonDataLogic[randomIndex].answer) {
-          logicCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt5").checked && jsonDataLogic[randomIndex].opt5 == jsonDataLogic[randomIndex].answer) {
-          logicCount++;
-          correctCount++;
-        }
-
-
-        if (document.getElementById("opt1").checked && jsonDataAbstract[randomIndex].opt1 == jsonDataAbstract[randomIndex].answer) {
-          abstractCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt2").checked && jsonDataAbstract[randomIndex].opt2 == jsonDataAbstract[randomIndex].answer) {
-          abstractCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt3").checked && jsonDataAbstract[randomIndex].opt3 == jsonDataAbstract[randomIndex].answer) {
-          abstractCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt4").checked && jsonDataAbstract[randomIndex].opt4 == jsonDataAbstract[randomIndex].answer) {
-          abstractCount++;
-          correctCount++;
-        }
-        if (document.getElementById("opt5").checked && jsonDataAbstract[randomIndex].opt5 == jsonDataAbstract[randomIndex].answer) {
-          abstractCount++;
-          correctCount++;
-        }
-        // increment i for next question
-        i++;
-        // When six questions are answered, enable the "submit" button and populate the result section of HTML page
-        if(i >= 6){
-          document.getElementById('buttonS').disabled = false;
-          document.getElementById("logic").innerHTML = "Logic: "+logicCount;
-          document.getElementById("abstract").innerHTML = "Abstract: "+abstractCount;
-          document.getElementById("total").innerHTML = "Total: "+correctCount;
-
-          // console logging to see if works
-          console.log(logicCount);
-          console.log(abstractCount);
-          console.log(correctCount);
-          document.getElementById("reply").style.display = "none";
-          document.getElementById("yourScore").style.display = "block";
-        }
-        else if(i >= 3){
-          randomIndex = Math.floor(Math.random() * jsonDataAbstract.length);
-          generateAbstract(randomIndex);
-        }
-        else {
-        // Until then callback to generate question
-      //  generate(i);
-        randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
-        generateLogic(randomIndex);
-      }
-    }
-      $("#insertResults").submit(function(event) {
-        //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
-        event.preventDefault();
-        console.log("button clicked");
-        // When the "submit" button is pressed, send the session results to the database to the corresponding columns
-        let data = new FormData();
-        data.append('logicCount', logicCount);
-        data.append('abstractCount', abstractCount);
-        data.append('correctCount', correctCount);
-
-        // Change the position of the questionForm div when all questions are answered
-        // Reset the submit button and start populating quesions anew
-        // $('#questionForm').animate({'margin-top': '-20%'}, 1000);
-        i = 0;
-        document.getElementById('buttonS').disabled = true;
-        document.getElementById("yourScore").style.display = "none";
-
-        // And then this...
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "index1.php",
-            data: data,
-            processData: false,//prevents from converting into a query string
-            contentType: false,
-            cache: false,
-            timeout: 600000,
-            success: function (response) {
-              console.log("Yoohoo!"+response);
-
-              // Parse average values of coulumns
-              let parsedJSON = JSON.parse(response);
-              console.log(parsedJSON);
-              updateValues(parsedJSON);
-            },
-            error:function(){
-             console.log("error occurred");
-            }
-         });
-    });
-
-    // Assigning values to JS variables to change the appearance of the graphics.
-    function updateValues(globalValues) {
-     var globalLogic = globalValues[0];
-     var globalAbstract = globalValues[1];
-     var globalTotal = globalValues[2];
-     console.log(globalLogic);
-     console.log(globalAbstract);
-     console.log(globalTotal);
-
-     if(globalAbstract > globalLogic) {
-       r = 255;
-       g = (globalAbstract - globalLogic) * 10;
-       b = globalLogic;
-     }
-     else if(globalAbstract < globalLogic) {
-       r = globalAbstract;
-       g = (globalLogic - globalAbstract) * 10;
-       b = 255;
-     }
-     else {
-       r = globalAbstract;
-       g = 255;
-       b = globalLogic;
-     }
-
-     a = 1;
-
-     var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
-
-     var heroPolygon = document.querySelectorAll("polygon");
-     var p;
-     for (p = 0; p < heroPolygon.length; p++) {
-       heroPolygon[p].style.fill = color;
-     }
-     var heroCircle = document.querySelectorAll("circle");
-     var c;
-     for (c = 0; c < heroCircle.length; c++) {
-       heroCircle[c].style.fill = color;
-     }
-    }
-
-    function toggle() {
-      var margin = document.getElementById("questionForm");
-      if(margin.style.display === "none") {
-        margin.style.display = "block";
-        document.getElementById("buttonH").style.transform = "rotate(-90deg)";
-        document.getElementById("reply").style.display = "block";
-      }
-      else {
-        margin.style.display = "none";
-        document.getElementById("buttonH").style.transform = "rotate(90deg)";
-      }
-      zeroOut();
-      console.log(abstractCount);
-    }
-
-    function zeroOut() {
-      correctCount = 0;
-      logicCount = 0;
-      abstractCount = 0;
-    }
-
-
-// Function to enable SVG image dynamic properties change
-// Borrowed from StackOverflow
-// https://stackoverflow.com/questions/24933430/img-src-svg-changing-the-fill-color?answertab=votes#tab-top
-// http://jsfiddle.net/wuSF7/462/
-    $(function(){
-      jQuery('img.svg').each(function(){
-        var $img = jQuery(this);
-        var imgID = $img.attr('id');
-        var imgClass = $img.attr('class');
-        var imgURL = $img.attr('src');
-
-        jQuery.get(imgURL, function(data) {
-            // Get the SVG tag, ignore the rest
-            var $svg = jQuery(data).find('svg');
-            // Add replaced image's ID to the new SVG
-            if(typeof imgID !== 'undefined') {
-                $svg = $svg.attr('id', imgID);
-            }
-            // Add replaced image's classes to the new SVG
-            if(typeof imgClass !== 'undefined') {
-                $svg = $svg.attr('class', imgClass+' replaced-svg');
-            }
-            // Remove any invalid XML tags as per http://validator.w3.org
-            $svg = $svg.removeAttr('xmlns:a');
-            // Check if the viewport is set, else we gonna set it if we can.
-            if(!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
-                $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
-            }
-            // Replace image with new SVG
-            $img.replaceWith($svg);
-
-        }, 'xml');
-      });
-    });
-
-     </script>
+    <!-- Linking to the main JS file -->
+    <script src="js/mechanics.js"></script>
     </body>
     </html>

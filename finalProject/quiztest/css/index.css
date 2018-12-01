@@ -19,7 +19,7 @@ body{
     display: block;
     background-color: rgba(255,255,255,.9);
     padding: 20px ;
-    font-size: 1.5em;
+    font-size: 1.2em;
     position: relative;
 }
 .questionForm p {
@@ -55,12 +55,21 @@ body{
   width: 50vw;
   max-width: 500px;
   margin: 0 auto;
-  margin-top: 10%;
+  margin-top: 20vh;
 }
 
 #result img, svg {
   width: 100%;
   height: auto;
+}
+
+#avatar {
+  width: 20vw;
+  height: 20vw;
+  position: fixed;
+  top: 0px;
+  right: 0;
+  padding: 20px;
 }
 
 /* #hero polygon, #hero circle {
