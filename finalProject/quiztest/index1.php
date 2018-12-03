@@ -68,7 +68,7 @@
       $sql_abstractAv='SELECT AVG(abstract) FROM quizResults WHERE inputTime = 0';
     }
 
-    // and running a querry
+    // and running a query
     $avgTotal = $db->query($sql_totalAv);
     $avgLogic = $db->query($sql_logicAv);
     $avgAbstract = $db->query($sql_abstractAv);
@@ -122,7 +122,11 @@
   <body>
     <!-- Here the graphics will be displayed with parameters retreived from the database -->
     <div id = "result">
+      <!-- Personal user results of the current session for comparison -->
+      <img id = "avatar" class="svg" src="img/hero.svg">
+      <!-- Hero graphics -->
       <img id = "hero" class="svg" src="img/hero.svg">
+      <!-- display the actual parameters -->
       <div id="heroState">
         <p id = "heroLogic"></p>
         <p id = "heroAbstract"></p>
@@ -130,18 +134,16 @@
       </div>
     </div>
 
-    <!-- Personal user results of the current session for comparison -->
-    <div id = "avatar">
-      <img id = "avatar" class="svg" src="img/hero.svg">
-    </div>
     <!-- Section of the questionaire to be populated from data file -->
     <div id="quizContainer">
       <div class="questionForm" id="questionForm">
         <form id="insertResults" action="" enctype="multipart/form-data">
           <h2>FEED THE COLLECTIVE MIND</h2>
           <div id = "reply">
+            <!-- Queation -->
             <div class="question" id="question">
             </div>
+            <!-- answer options -->
             <div><input type="radio" id="opt1" name="options" onclick="checkAnswers()">
               <span id="optt1"></span>
             </div>
@@ -164,7 +166,7 @@
             <p class="hide" id = "abstract" name="a_abstract"></p>
             <p class="hide" id = "total" name="a_total"></p>
         </div>
-        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle()"> submit </button>
+        <button input type = "submit" name = "submit" value = "submit my info" id =buttonS disabled="disabled" onclick="toggle()"> submit results </button>
         </form>
       </div> <!-- end of questionForm -->
     </div> <!-- end of quizContainer-->

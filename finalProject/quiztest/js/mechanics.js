@@ -1,39 +1,45 @@
 // js array sequence variable
 var i = 0;
+// current session score
 var logicCount = 0 ;
 var abstractCount = 0;
 var correctCount = 0;
+// random  index to pull from the question database
 var randomIndex = 0;
+// default RGB values
+// for Hero graphics
+
 var r = 255;
 var g = 255;
 var b = 255;
 var a = 1;
-
+// and for current session avatar
 var ar = 0;
 var ag = 0;
 var ab = 0;
 var aa = 1;
 
+// establishing currents time
 var d = new Date();
 var time = d.getHours();
+// "morning" will be between 2am and 2pm
 var morning;
 if(time < 14 && time > 2) {
   morning = 1;
 }
+// otherwise it's "not morning"
 else {
   morning = 0;
 }
-console.log(morning);
+// console.log(morning);
 
 //initialize the first question
-// var rand = jsonDataLogic[Math.floor(Math.random() * jsonDataLogic.length)];
 console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
 randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
 generateLogic(randomIndex);
 // generate from js array data with index
 // first for the logic section
 function generateLogic(index) {
-//  console.log("inside:: "+index);
   document.getElementById("question").innerHTML = jsonDataLogic[index].q;
   document.getElementById("optt1").innerHTML = jsonDataLogic[index].opt1;
   document.getElementById("optt2").innerHTML = jsonDataLogic[index].opt2;
@@ -107,14 +113,18 @@ function checkAnswers() {
   // increment i for next question
   i++;
 
+// generating first three questions from logic questions
   if(i < 3) {
     randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
     generateLogic(randomIndex);
   }
+  // next three questions from the abstract section
   else if(i >= 3 && i < 6) {
     randomIndex = Math.floor(Math.random() * jsonDataAbstract.length);
     generateAbstract(randomIndex);
   }
+  // after six questions are answered, enabling the "submit" button
+  // generating the current session score
   else {
       document.getElementById('buttonS').disabled = false;
       document.getElementById("logic").innerHTML = "Logic: "+logicCount;
@@ -122,9 +132,11 @@ function checkAnswers() {
       document.getElementById("total").innerHTML = "Total: "+correctCount;
 
       // console logging to see if works
-      console.log(logicCount);
-      console.log(abstractCount);
-      console.log(correctCount);
+      // console.log(logicCount);
+      // console.log(abstractCount);
+      // console.log(correctCount);
+
+      // hiding questions and displaying current session results
       document.getElementById("reply").style.display = "none";
       document.getElementById("yourScore").style.display = "block";
       changeColor();
@@ -143,6 +155,8 @@ $("#insertResults").submit(function(event) {
   // Change the position of the questionForm div when all questions are answered
   // Reset the submit button and start populating quesions anew
   i = 0;
+
+  // hiding previous score and disabling the "submit" button
   document.getElementById('buttonS').disabled = true;
   document.getElementById("yourScore").style.display = "none";
 
@@ -171,14 +185,15 @@ $("#insertResults").submit(function(event) {
 });
 
 // Assigning values to JS variables to change the appearance of the graphics.
-
+// taking these variables from the array passed from the batabase
 function updateValues(globalValues) {
   var globalLogic = globalValues[0];
   var globalAbstract = globalValues[1];
   var globalTotal = globalValues[2];
-  console.log(globalLogic);
-  console.log(globalAbstract);
-  console.log(globalTotal);
+  // just checking if works
+  // console.log(globalLogic);
+  // console.log(globalAbstract);
+  // console.log(globalTotal);
   // Append info into paragraphs below the graphics
   document.getElementById("heroLogic").innerHTML = "Logic Thinking: "+ Math.ceil(globalLogic);
   document.getElementById("heroAbstract").innerHTML = "Abstract Thinking: "+ Math.ceil(globalAbstract);
@@ -188,12 +203,14 @@ function updateValues(globalValues) {
   r = globalAbstract * 85;
   g = Math.abs((globalLogic * 85) - (globalAbstract * 85));
   b = globalLogic * 85;
+  // Using total score to define opacity
   // max. value for globalTotal is 6, since the value of alpha cannot exceed 1,
   // let's divide the globalTotal value by 6 and by doing so map alpha to it
   a = globalTotal / 6;
 
   var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
 
+// Now colour all the elements of Hero SVG graphics (which consists of polygons and circles) with current shade
   var heroPolygon = document.querySelectorAll("#hero polygon");
   var p;
   for (p = 0; p < heroPolygon.length; p++) {
@@ -206,6 +223,8 @@ function updateValues(globalValues) {
   }
 }
 
+// Function to change colour of the current session avatarCircle
+// same way as Hero graphics, only using current session results instead of global average results
 function changeColor() {
   // Define colour for current session avatar
   // multiplying by 85 to map to RGB values
@@ -228,20 +247,25 @@ function changeColor() {
     }
 }
 
+// Function to open and close questionaire
 function toggle() {
+  // if the questionaire is clossed, "toggle" opens it, rotates the arrows, and hides the avatar
   var margin = document.getElementById("questionForm");
   if(margin.style.display === "none") {
     margin.style.display = "block";
     document.getElementById("buttonH").style.transform = "rotate(-90deg)";
     document.getElementById("reply").style.display = "block";
+    document.getElementById('avatar').style.display = "none";
+    // this function sets current session scores to zero
     zeroOut();
   }
   else {
     margin.style.display = "none";
     document.getElementById("buttonH").style.transform = "rotate(90deg)";
+    document.getElementById('avatar').style.display = "block";
   }
 }
-
+// this function sets current session scores to zero
 function zeroOut() {
   correctCount = 0;
   logicCount = 0;

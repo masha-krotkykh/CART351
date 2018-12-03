@@ -21,6 +21,7 @@ body{
     padding: 20px ;
     font-size: 1.2em;
     position: relative;
+    min-height: 50vh;
 }
 .questionForm p {
     line-height: .5em;
@@ -30,7 +31,7 @@ body{
 .question{
     font-size : 1em;
     font-weight: bold;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
 }
 
 #buttonH {
@@ -49,6 +50,16 @@ body{
   font-size: 1em;
   background-color: rgba(255,255,255,.5);
   outline: 0;
+}
+
+#buttonS {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    min-width: 20%;
+    font-size: .8em;
+    padding: 10px;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
 }
 
 #result {
@@ -92,11 +103,11 @@ transform: scale(1, 1);
 }
 
 #avatar {
-  width: 10vw;
-  height: 10vw;
+  width: 10%;
+  max-width: 150px;
   position: fixed;
-  top: 10%;
-  right: 10%;
+  top: 5%;
+  right: 25%;
   padding: 30px;
   -webkit-animation: none;
 	animation:none;
