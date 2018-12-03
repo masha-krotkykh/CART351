@@ -171,7 +171,7 @@ $("#insertResults").submit(function(event) {
 });
 
 // Assigning values to JS variables to change the appearance of the graphics.
-// Define colour for hero graphics
+
 function updateValues(globalValues) {
   var globalLogic = globalValues[0];
   var globalAbstract = globalValues[1];
@@ -179,14 +179,18 @@ function updateValues(globalValues) {
   console.log(globalLogic);
   console.log(globalAbstract);
   console.log(globalTotal);
-
-  // since we multiplied global values by 85, they must now nicely map to RGB values (0-0, 1-85, 2-170, 3-255)
-  r = globalAbstract;
-  g = Math.abs(globalLogic - globalAbstract);
-  b = globalLogic;
-  // max. value for globalTotal is 85 * 6 = 510, since the value of alpha cannot exceed 1,
-  // let's divide the globalTotal value by 510 and by doing so map alpha to it
-  a = globalTotal / 510;
+  // Append info into paragraphs below the graphics
+  document.getElementById("heroLogic").innerHTML = "Logic Thinking: "+ Math.ceil(globalLogic);
+  document.getElementById("heroAbstract").innerHTML = "Abstract Thinking: "+ Math.ceil(globalAbstract);
+  document.getElementById("heroTotal").innerHTML = "General Productivity: "+ Math.ceil(globalTotal);
+  // Define colour for hero graphics
+  // multiplying by 85, to nicely map to RGB values (0-0, 1-85, 2-170, 3-255)
+  r = globalAbstract * 85;
+  g = Math.abs((globalLogic * 85) - (globalAbstract * 85));
+  b = globalLogic * 85;
+  // max. value for globalTotal is 6, since the value of alpha cannot exceed 1,
+  // let's divide the globalTotal value by 6 and by doing so map alpha to it
+  a = globalTotal / 6;
 
   var color = "rgba("+ r +","+ g +", "+ b +", "+ a +")";
 
@@ -204,10 +208,11 @@ function updateValues(globalValues) {
 
 function changeColor() {
   // Define colour for current session avatar
+  // multiplying by 85 to map to RGB values
     ar = abstractCount * 85;
     ag = Math.abs((abstractCount - logicCount) * 85);
     ab = logicCount * 85;
-    aa = correctCount/6;
+    aa = correctCount / 6;
 
     var aColor = "rgba("+ ar +","+ ag +", "+ ab +", "+ aa +")";
 

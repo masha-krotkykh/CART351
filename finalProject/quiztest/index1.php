@@ -55,9 +55,19 @@
     }
 
     // Getting an average value of every coulumn
-    $sql_totalAv='SELECT AVG(total) FROM quizResults';
-    $sql_logicAv='SELECT AVG(logic) FROM quizResults';
-    $sql_abstractAv='SELECT AVG(abstract) FROM quizResults';
+    // if current time is between 2am and 2 pm, we'll only check the results where "morning" is true i.e. the results that were submitted in the morning
+    if (date('H') < 14 && date('H') > 2) {
+      $sql_totalAv='SELECT AVG(total) FROM quizResults WHERE inputTime = 1';
+      $sql_logicAv='SELECT AVG(logic) FROM quizResults WHERE inputTime = 1';
+      $sql_abstractAv='SELECT AVG(abstract) FROM quizResults WHERE inputTime = 1';
+    }
+    // if current time is between 2pm and 2am, we'll only check the afternoon results
+    else {
+      $sql_totalAv='SELECT AVG(total) FROM quizResults WHERE inputTime = 0';
+      $sql_logicAv='SELECT AVG(logic) FROM quizResults WHERE inputTime = 0';
+      $sql_abstractAv='SELECT AVG(abstract) FROM quizResults WHERE inputTime = 0';
+    }
+
     // and running a querry
     $avgTotal = $db->query($sql_totalAv);
     $avgLogic = $db->query($sql_logicAv);
@@ -66,12 +76,11 @@
     if (!$avgTotal || !$avgLogic || !$avgAbstract) die("Cannot execute query.");
     // !!! THE RESULT RETURNS AS AN ARRAY EVEN IF IT HAS ONLY ONE VALUE !!!
     // use while loop to "unpack" values from arrays
-    // multiplying the values by 85 to map nicely to RGB values
     while($row = $avgTotal->fetchArray(SQLITE3_ASSOC))
     {
       foreach ($row as $key=>$entry)
       {
-        $finalTotalVal = (int)($entry*85);
+        $finalTotalVal = (int)($entry);
         // echo $finalTotalVal;
       }
     }
@@ -79,7 +88,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalLogicVal = (int)($entry*85);
+        $finalLogicVal = (int)($entry);
         // echo $finalLogicVal;
       }
     }
@@ -87,7 +96,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalAbstractVal = (int)($entry*85);
+        $finalAbstractVal = (int)($entry);
         // echo $finalAbstractVal;
       }
     }
@@ -114,6 +123,11 @@
     <!-- Here the graphics will be displayed with parameters retreived from the database -->
     <div id = "result">
       <img id = "hero" class="svg" src="img/hero.svg">
+      <div id="heroState">
+        <p id = "heroLogic"></p>
+        <p id = "heroAbstract"></p>
+        <p id = "heroTotal"></p>
+      </div>
     </div>
 
     <!-- Personal user results of the current session for comparison -->
