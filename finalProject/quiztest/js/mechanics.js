@@ -1,7 +1,7 @@
 // js array sequence variable
 var i = 0;
 // current session score
-var logicCount = 0 ;
+var logicCount = 0;
 var abstractCount = 0;
 var correctCount = 0;
 // random  index to pull from the question database
@@ -119,7 +119,7 @@ function checkAnswers() {
     generateLogic(randomIndex);
   }
   // next three questions from the abstract section
-  else if(i >= 3 && i < 6) {
+  else if(i < 6) {
     randomIndex = Math.floor(Math.random() * jsonDataAbstract.length);
     generateAbstract(randomIndex);
   }
@@ -195,9 +195,9 @@ function updateValues(globalValues) {
   // console.log(globalAbstract);
   // console.log(globalTotal);
   // Append info into paragraphs below the graphics
-  document.getElementById("heroLogic").innerHTML = "Logic Thinking: "+ Math.ceil(globalLogic);
-  document.getElementById("heroAbstract").innerHTML = "Abstract Thinking: "+ Math.ceil(globalAbstract);
-  document.getElementById("heroTotal").innerHTML = "General Productivity: "+ Math.ceil(globalTotal);
+  document.getElementById("heroLogic").innerHTML = "Logic Thinking: "+ globalLogic;
+  document.getElementById("heroAbstract").innerHTML = "Abstract Thinking: "+ globalAbstract;
+  document.getElementById("heroTotal").innerHTML = "General Productivity: "+ globalTotal;
   // Define colour for hero graphics
   // multiplying by 85, to nicely map to RGB values (0-0, 1-85, 2-170, 3-255)
   r = globalAbstract * 85;

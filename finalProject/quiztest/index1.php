@@ -54,18 +54,18 @@
       exit;
     }
 
-    // Getting an average value of every coulumn
+    // Getting an average value of every column
     // if current time is between 2am and 2 pm, we'll only check the results where "morning" is true i.e. the results that were submitted in the morning
     if (date('H') < 14 && date('H') > 2) {
-      $sql_totalAv='SELECT AVG(total) FROM quizResults WHERE inputTime = 1';
-      $sql_logicAv='SELECT AVG(logic) FROM quizResults WHERE inputTime = 1';
-      $sql_abstractAv='SELECT AVG(abstract) FROM quizResults WHERE inputTime = 1';
+      $sql_totalAv='SELECT AVG(CAST(total as FLOAT)) FROM quizResults WHERE inputTime = 1';
+      $sql_logicAv='SELECT AVG(CAST(logic as FLOAT)) FROM quizResults WHERE inputTime = 1';
+      $sql_abstractAv='SELECT AVG(CAST(abstract as FLOAT)) FROM quizResults WHERE inputTime = 1';
     }
     // if current time is between 2pm and 2am, we'll only check the afternoon results
     else {
-      $sql_totalAv='SELECT AVG(total) FROM quizResults WHERE inputTime = 0';
-      $sql_logicAv='SELECT AVG(logic) FROM quizResults WHERE inputTime = 0';
-      $sql_abstractAv='SELECT AVG(abstract) FROM quizResults WHERE inputTime = 0';
+      $sql_totalAv='SELECT AVG(CAST(total as FLOAT)) FROM quizResults WHERE inputTime = 0';
+      $sql_logicAv='SELECT AVG(CAST(logic as FLOAT)) FROM quizResults WHERE inputTime = 0';
+      $sql_abstractAv='SELECT AVG(CAST(abstract as FLOAT)) FROM quizResults WHERE inputTime = 0';
     }
 
     // and running a query
@@ -140,7 +140,7 @@
         <form id="insertResults" action="" enctype="multipart/form-data">
           <h2>FEED THE COLLECTIVE MIND</h2>
           <div id = "reply">
-            <!-- Queation -->
+            <!-- Question -->
             <div class="question" id="question">
             </div>
             <!-- answer options -->
