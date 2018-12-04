@@ -39,10 +39,10 @@
     $inputTime_es = $db->escapeString($inputTime);
 
     // converting the values into integers
-    $logic_int = intval($logic_es);
-    $abstract_int = intval($abstract_es);
-    $total_int = intval($total_es);
-    $inputTime_int = intval($inputTime_es);
+    $logic_int = floatval($logic_es);
+    $abstract_int = floatval($abstract_es);
+    $total_int = floatval($total_es);
+    $inputTime_int = floatval($inputTime_es);
 
     // and inserting these values into the table into corresponding columns
     $queryInsert ="INSERT INTO quizResults(logic, abstract, total, inputTime)VALUES ('$logic_int', '$abstract_int','$total_int','$inputTime_int')";
@@ -57,15 +57,15 @@
     // Getting an average value of every column
     // if current time is between 2am and 2 pm, we'll only check the results where "morning" is true i.e. the results that were submitted in the morning
     if (date('H') < 14 && date('H') > 2) {
-      $sql_totalAv='SELECT AVG(CAST(total as FLOAT)) FROM quizResults WHERE inputTime = 1';
-      $sql_logicAv='SELECT AVG(CAST(logic as FLOAT)) FROM quizResults WHERE inputTime = 1';
-      $sql_abstractAv='SELECT AVG(CAST(abstract as FLOAT)) FROM quizResults WHERE inputTime = 1';
+      $sql_totalAv='SELECT AVG(CAST(total as REAL)) FROM quizResults WHERE inputTime = 1';
+      $sql_logicAv='SELECT AVG(CAST(logic as REAL)) FROM quizResults WHERE inputTime = 1';
+      $sql_abstractAv='SELECT AVG(CAST(abstract as REAL)) FROM quizResults WHERE inputTime = 1';
     }
     // if current time is between 2pm and 2am, we'll only check the afternoon results
     else {
-      $sql_totalAv='SELECT AVG(CAST(total as FLOAT)) FROM quizResults WHERE inputTime = 0';
-      $sql_logicAv='SELECT AVG(CAST(logic as FLOAT)) FROM quizResults WHERE inputTime = 0';
-      $sql_abstractAv='SELECT AVG(CAST(abstract as FLOAT)) FROM quizResults WHERE inputTime = 0';
+      $sql_totalAv='SELECT AVG(CAST(total as REAL)) FROM quizResults WHERE inputTime = 0';
+      $sql_logicAv='SELECT AVG(CAST(logic as REAL)) FROM quizResults WHERE inputTime = 0';
+      $sql_abstractAv='SELECT AVG(CAST(abstract as REAL)) FROM quizResults WHERE inputTime = 0';
     }
 
     // and running a query

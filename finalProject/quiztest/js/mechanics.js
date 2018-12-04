@@ -61,42 +61,42 @@ function generateAbstract(index) {
 function checkAnswers() {
   if (document.getElementById("opt1").checked) {
     if(jsonDataLogic[randomIndex].opt1 == jsonDataLogic[randomIndex].answer) {
-      logicCount++;
-      correctCount++;
+      logicCount+=1.0;
+      correctCount+=1.0;
     }
     else if(jsonDataAbstract[randomIndex].opt1 == jsonDataAbstract[randomIndex].answer) {
-      abstractCount++;
-      correctCount++;
+      abstractCount+=1.0;
+      correctCount+=1.0;
     }
   }
   if (document.getElementById("opt2").checked) {
     if(jsonDataLogic[randomIndex].opt2 == jsonDataLogic[randomIndex].answer) {
-      logicCount++;
-      correctCount++;
+      logicCount+=1.0;
+      correctCount+=1.0;
     }
     else if(jsonDataAbstract[randomIndex].opt2 == jsonDataAbstract[randomIndex].answer) {
-      abstractCount++;
-      correctCount++;
+      abstractCount+=1.0;
+      correctCount+=1.0;
     }
   }
   if (document.getElementById("opt3").checked) {
     if(jsonDataLogic[randomIndex].opt3 == jsonDataLogic[randomIndex].answer) {
-      logicCount++;
-      correctCount++;
+      logicCount+=1.0;
+      correctCount+=1.0;
     }
     else if(jsonDataAbstract[randomIndex].opt3 == jsonDataAbstract[randomIndex].answer) {
-      abstractCount++;
-      correctCount++;
+      abstractCount+=1.0;
+      correctCount+=1.0;
     }
   }
   if (document.getElementById("opt4").checked) {
     if(jsonDataLogic[randomIndex].opt4 == jsonDataLogic[randomIndex].answer) {
-      logicCount++;
-      correctCount++;
+      logicCount+=1.0;
+      correctCount+=1.0;
     }
     else if(jsonDataAbstract[randomIndex].opt4 == jsonDataAbstract[randomIndex].answer) {
-      abstractCount++;
-      correctCount++;
+      abstractCount+=1.0;
+      correctCount+=1.0;
     }
   }
   if (document.getElementById("opt5").checked) {
@@ -114,7 +114,7 @@ function checkAnswers() {
   i++;
 
 // generating first three questions from logic questions
-  if(i < 3) {
+  if(i <= 2) {
     randomIndex = Math.floor(Math.random() * jsonDataLogic.length);
     generateLogic(randomIndex);
   }
@@ -231,7 +231,12 @@ function changeColor() {
     ar = abstractCount * 85;
     ag = Math.abs((abstractCount - logicCount) * 85);
     ab = logicCount * 85;
-    aa = correctCount / 6;
+    if(correctCount===0){
+      aa = 1;
+    }
+    else {
+      aa = correctCount / 6;
+    }
 
     var aColor = "rgba("+ ar +","+ ag +", "+ ab +", "+ aa +")";
 

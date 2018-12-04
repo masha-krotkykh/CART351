@@ -12,7 +12,7 @@ try
 {
    $db = new MyDB();
    echo ("Opened or created quiz results data base successfully<br \>");
-   $theQuery = 'CREATE TABLE quizResults (pieceID INTEGER PRIMARY KEY NOT NULL, logic FLOAT, abstract FLOAT, total FLOAT, inputTime INTEGER)';
+   $theQuery = 'CREATE TABLE quizResults (pieceID INTEGER PRIMARY KEY NOT NULL, logic REAL, abstract REAL, total REAL, inputTime INTEGER)';
    $ok = $db ->exec($theQuery);
   	// make sure the query executed
   	if (!$ok)
