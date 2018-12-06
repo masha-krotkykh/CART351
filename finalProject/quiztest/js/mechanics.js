@@ -196,9 +196,9 @@ function updateValues(globalValues) {
   // console.log(globalAbstract);
   // console.log(globalTotal);
   // Append info into paragraphs below the graphics
-  document.getElementById("heroLogic").innerHTML = "Logic Thinking: "+ globalLogic;
-  document.getElementById("heroAbstract").innerHTML = "Abstract Thinking: "+ globalAbstract;
-  document.getElementById("heroTotal").innerHTML = "General Productivity: "+ globalTotal;
+  document.getElementById("heroLogic").innerHTML = "Logic Thinking: "+ globalLogic.toFixed(3);
+  document.getElementById("heroAbstract").innerHTML = "Abstract Thinking: "+ globalAbstract.toFixed(3);
+  document.getElementById("heroTotal").innerHTML = "General Productivity: "+ globalTotal.toFixed(3);
   // Define colour for hero graphics
   // multiplying by 85, to nicely map to RGB values (0-0, 1-85, 2-170, 3-255)
   r = globalAbstract * 85;
