@@ -31,7 +31,7 @@ if(time < 14 && time > 2) {
 else {
   morning = 0;
 }
-// console.log(morning);
+console.log(morning);
 
 //initialize the first question
 console.log("randomIndex::"+Math.floor(Math.random() * jsonDataLogic.length));
@@ -151,6 +151,7 @@ $("#insertResults").submit(function(event) {
   data.append('logicCount', logicCount);
   data.append('abstractCount', abstractCount);
   data.append('correctCount', correctCount);
+  data.append('morning', morning);
 
   // Change the position of the questionForm div when all questions are answered
   // Reset the submit button and start populating quesions anew

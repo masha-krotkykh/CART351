@@ -44,6 +44,8 @@
     $total_int = floatval($total_es);
     $inputTime_int = floatval($inputTime_es);
 
+    // echo $inputTime_int;
+
     // and inserting these values into the table into corresponding columns
     $queryInsert ="INSERT INTO quizResults(logic, abstract, total, inputTime)VALUES ('$logic_int', '$abstract_int','$total_int','$inputTime_int')";
     // again we do error checking when we try to execute our SQL statement on the db
@@ -53,6 +55,11 @@
       die("Cannot execute statement.");
       exit;
     }
+
+//$query = "SELECT AVG (total) FROM quizResults";
+  //$test = $db->query($query);
+  //var_dump($row = $test->fetchArray(SQLITE3_ASSOC));
+
 
     // Getting an average value of every column
     // if current time is between 2am and 2 pm, we'll only check the results where "morning" is true i.e. the results that were submitted in the morning
@@ -80,7 +87,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalTotalVal = (int)($entry);
+        $finalTotalVal = ($entry);
         // echo $finalTotalVal;
       }
     }
@@ -88,7 +95,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalLogicVal = (int)($entry);
+        $finalLogicVal = ($entry);
         // echo $finalLogicVal;
       }
     }
@@ -96,7 +103,7 @@
     {
       foreach ($row as $key=>$entry)
       {
-        $finalAbstractVal = (int)($entry);
+        $finalAbstractVal = ($entry);
         // echo $finalAbstractVal;
       }
     }

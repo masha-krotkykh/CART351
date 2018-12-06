@@ -252,7 +252,7 @@ var jsonDataLogic = [
 ];
 var jsonDataAbstract = [
     {
-        "q" : "Some months have 3 days, some months have 31 days. How many months have 28 days?",
+        "q" : "Some months have 30 days, some months have 31 days. How many months have 28 days?",
         "type" : "abstract",
         "opt1" : "1",
         "opt2" : "all",
